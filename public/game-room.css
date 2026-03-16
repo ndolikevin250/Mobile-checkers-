@@ -55,8 +55,9 @@ body {
 
 .board-wrapper {
     width: 100%;
+    max-width: min(100%, 55vh);
     aspect-ratio: 1;
-    padding: 15px;
+    padding: 10px;
     background: linear-gradient(145deg, #2c2c2c, #1a1a1a);
     border-radius: 10px;
     box-shadow:
@@ -64,6 +65,7 @@ body {
         -20px -20px 60px #242424;
     position: relative;
     overflow: hidden;
+    margin: 0 auto;
 }
 
 .board-wrapper::before {
@@ -627,19 +629,37 @@ body {
 
 /* Mobile */
 @media (max-width: 480px) {
+    body {
+        align-items: flex-start;
+        padding-top: 10px;
+    }
+
     .container {
         width: 95vw;
         max-width: none;
-        padding: 5px;
+        padding: 4px;
     }
 
     .game-room-container {
-        padding: 5px;
+        padding: 4px;
+    }
+
+    .game-room-container.cyber-border {
+        padding: 6px;
+        border-width: 1px;
+    }
+
+    .game-room-container.cyber-border::before {
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        border-width: 1px;
     }
 
     .game-room-container h1 {
-        font-size: 1em;
-        margin: 3px 0;
+        font-size: 0.85em;
+        margin: 2px 0;
     }
 
     .players-info {
@@ -669,6 +689,7 @@ body {
 
     .board-wrapper {
         padding: 6px;
+        max-width: min(90vw, 50vh);
     }
 
     .info-panel {
@@ -729,25 +750,32 @@ body {
 @media (max-width: 360px) {
     .board-wrapper {
         padding: 4px;
+        max-width: min(88vw, 45vh);
     }
 
     .players-info {
-        padding: 4px;
+        padding: 3px;
     }
 
     .player {
         font-size: 10px;
-        padding: 3px 5px;
+        padding: 3px 4px;
     }
 
     .info-panel {
-        padding: 4px 8px;
-        font-size: 0.7em;
+        padding: 3px 6px;
+        font-size: 0.65em;
     }
 
     .room-controls .cyber-button {
-        padding: 6px 10px;
-        font-size: 10px;
+        padding: 5px 8px;
+        font-size: 9px;
+        letter-spacing: 0.5px;
+    }
+
+    .game-room-container h1 {
+        font-size: 0.75em;
+        margin: 1px 0;
     }
 }
 

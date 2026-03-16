@@ -1158,17 +1158,13 @@ async function loadGameState() {
     }
 
     if (data && data.success && data.gameState) {
-        gameBoard = data.gameState.board;
-        currentPlayer = data.gameState.currentPlayer;
-        gameHistory = data.gameState.moveHistory;
-
         // Load difficulty setting
         if (data.gameState.currentDifficulty) {
             currentDifficulty = data.gameState.currentDifficulty;
             localStorage.setItem('aiDifficulty', currentDifficulty);
         }
 
-        // Load patterns for all AI instances
+        // Load patterns for all AI instances (preserves AI learning)
         if (data.gameState.aiPatterns) {
             if (Array.isArray(data.gameState.aiPatterns)) {
                 // Legacy format - load into medium AI
@@ -1193,14 +1189,16 @@ async function loadGameState() {
             }
         }
 
-        totalGames = data.gameState.statistics.totalGames;
-        wins = data.gameState.statistics.wins;
-        losses = data.gameState.statistics.losses;
-        totalPositionalMoves = data.gameState.statistics.totalMoves;
+        // Load statistics
+        if (data.gameState.statistics) {
+            totalGames = data.gameState.statistics.totalGames;
+            wins = data.gameState.statistics.wins;
+            losses = data.gameState.statistics.losses;
+            totalPositionalMoves = data.gameState.statistics.totalMoves;
+        }
 
-        updateBoardDisplay();
-
-        return true;
+        // Always start with a fresh board — don't restore mid-game state
+        return false;
     }
     return false;
 }

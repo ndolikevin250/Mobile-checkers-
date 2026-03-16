@@ -34,6 +34,11 @@
 
         // Prevent default touch behaviors on the board (scrolling, zooming)
         board.addEventListener('touchstart', function(e) {
+            // Enable audio on first touch (must happen before preventDefault)
+            if (typeof soundManager !== 'undefined' && !soundManager.userInteracted) {
+                soundManager.enableAudio();
+            }
+
             // Don't prevent default if user is touching a non-game element
             const target = e.target.closest('.cell, .square, .piece');
             if (target) {

@@ -241,9 +241,15 @@ a, button, select, input, .cyber-button, .chat-button, .profile-icon {
 }
 
 /* Prevent text selection on game UI (not inputs) */
-.cyber-border, .board, .game-container, .info-panel, .players-info {
+.board, .game-container, .info-panel, .players-info {
     -webkit-user-select: none;
     user-select: none;
+}
+
+/* Allow text input inside forms */
+input, textarea, select {
+    -webkit-user-select: text !important;
+    user-select: text !important;
 }
 
 /* Global responsive adjustments */

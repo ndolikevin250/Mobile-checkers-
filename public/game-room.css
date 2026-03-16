@@ -636,13 +636,11 @@ body {
         padding-top: 5px;
     }
 
-    /* THIS is the critical line: on a phone in portrait,
-       95vh ensures the board + chrome fit without scrolling.
-       Same principle as single-player's min(95vw, 95vh). */
     .container {
-        width: min(98vw, 90vh);
+        width: min(92vw, 90vh);
         max-width: none;
         padding: 4px;
+        margin: 0 auto;
     }
 
     .game-room-container {
@@ -652,13 +650,14 @@ body {
     .game-room-container.cyber-border {
         padding: 6px;
         border-width: 1px;
+        overflow: hidden;
     }
 
     .game-room-container.cyber-border::before {
-        top: -3px;
-        left: -3px;
-        right: -3px;
-        bottom: -3px;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
         border-width: 1px;
     }
 
@@ -767,7 +766,7 @@ body {
 /* Small phones (iPhone SE, etc) */
 @media (max-width: 360px) {
     .container {
-        width: min(99vw, 88vh);
+        width: min(90vw, 88vh);
     }
 
     .board-wrapper {
@@ -1008,30 +1007,36 @@ body {
     display: none !important;
 }
 
-/* Profile Icon */
+/* Profile Icon — compact draggable badge */
 .profile-icon {
     position: fixed;
-    top: 20px;
-    left: 20px;
-    width: 50px;
-    height: 50px;
+    top: 12px;
+    left: 12px;
+    width: 36px;
+    height: 36px;
     background: rgba(0, 10, 20, 0.9);
-    border: 2px solid var(--primary-color);
+    border: 1.5px solid var(--primary-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 24px;
-    cursor: pointer;
+    font-size: 16px;
+    cursor: grab;
     z-index: 1000;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
-    transition: all 0.3s ease;
+    box-shadow: 0 0 8px rgba(0, 255, 255, 0.3);
+    transition: opacity 0.3s ease, box-shadow 0.3s ease;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.profile-icon.dragging {
+    cursor: grabbing;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.6);
 }
 
 .profile-icon:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
-    background: rgba(0, 10, 20, 1);
+    box-shadow: 0 0 12px rgba(0, 255, 255, 0.5);
 }
 
 .profile-icon.guest {
@@ -1194,11 +1199,11 @@ body {
 /* Mobile responsiveness for dashboard */
 @media (max-width: 768px) {
     .profile-icon {
-        top: 10px;
-        left: 10px;
-        width: 40px;
-        height: 40px;
-        font-size: 20px;
+        top: 8px;
+        left: 8px;
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
     }
 
     .dashboard-modal {

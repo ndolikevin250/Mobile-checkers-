@@ -403,3 +403,68 @@
         setTimeout(init, 100);
     }
 })();
+
+// ── Make profile icon draggable (all pages) ──
+(function() {
+    'use strict';
+    function initDraggable(el) {
+        if (!el) return;
+        let isDragging = false, startX, startY, startLeft, startTop;
+
+        function onStart(e) {
+            const touch = e.touches ? e.touches[0] : e;
+            isDragging = true;
+            startX = touch.clientX;
+            startY = touch.clientY;
+            const rect = el.getBoundingClientRect();
+            startLeft = rect.left;
+            startTop = rect.top;
+            el.classList.add('dragging');
+            e.preventDefault();
+        }
+
+        function onMove(e) {
+            if (!isDragging) return;
+            const touch = e.touches ? e.touches[0] : e;
+            const dx = touch.clientX - startX;
+            const dy = touch.clientY - startY;
+            const newLeft = Math.max(0, Math.min(window.innerWidth - el.offsetWidth, startLeft + dx));
+            const newTop = Math.max(0, Math.min(window.innerHeight - el.offsetHeight, startTop + dy));
+            el.style.left = newLeft + 'px';
+            el.style.top = newTop + 'px';
+            el.style.right = 'auto';
+            el.style.bottom = 'auto';
+            e.preventDefault();
+        }
+
+        function onEnd(e) {
+            if (!isDragging) return;
+            const touch = e.changedTouches ? e.changedTouches[0] : e;
+            const dx = Math.abs(touch.clientX - startX);
+            const dy = Math.abs(touch.clientY - startY);
+            isDragging = false;
+            el.classList.remove('dragging');
+            // If barely moved, treat as a click
+            if (dx < 5 && dy < 5) {
+                el.click();
+            }
+        }
+
+        el.addEventListener('mousedown', onStart);
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onEnd);
+        el.addEventListener('touchstart', onStart, { passive: false });
+        document.addEventListener('touchmove', onMove, { passive: false });
+        document.addEventListener('touchend', onEnd);
+    }
+
+    function setup() {
+        initDraggable(document.getElementById('profileIcon'));
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', setup);
+    } else {
+        setup();
+    }
+})();

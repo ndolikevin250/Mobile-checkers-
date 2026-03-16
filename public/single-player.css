@@ -329,27 +329,19 @@ body {
     }
 
     .ai-thinking {
-        width: 100px;
-        height: 100px;
-        padding: 8px;
         top: 10px;
         left: 10px;
-    }
-
-    .ai-thinking-content {
-        text-align: center;
+        padding: 4px 8px;
+        max-width: 120px;
+        border-radius: 16px;
     }
 
     .ai-thinking-title {
-        font-size: 9px;
-        margin-bottom: 4px;
+        font-size: 8px;
     }
 
-    .ai-thinking-status,
-    .ai-thinking-depth,
-    .ai-thinking-confidence {
-        font-size: 8px;
-        margin-bottom: 1px;
+    .ai-thinking-status {
+        font-size: 7px;
     }
 }
 
@@ -363,27 +355,7 @@ body {
     }
 }
 
-@media (max-width: 480px) {
-    .ai-thinking {
-        width: 80px;
-        height: 80px;
-        padding: 5px;
-        top: 5px;
-        left: 5px;
-    }
-
-    .ai-thinking-title {
-        font-size: 8px;
-        margin-bottom: 3px;
-    }
-
-    .ai-thinking-status,
-    .ai-thinking-depth,
-    .ai-thinking-confidence {
-        font-size: 7px;
-        margin-bottom: 1px;
-    }
-}
+/* (AI thinking mobile overrides consolidated above) */
 
 /* Enhanced end game modal with victory/defeat animations */
 .end-game-modal {
@@ -931,100 +903,97 @@ body {
 }
 
 
-/* AI Thinking Indicator - Square at Top Left of Screen */
+/* AI Thinking Indicator - Compact draggable badge */
 .ai-thinking {
     position: fixed;
     top: 20px;
     left: 20px;
-    background: rgba(0, 10, 20, 0.95);
-    border: 2px solid #00ffff;
-    border-radius: 8px;
-    padding: 12px;
+    background: rgba(0, 10, 20, 0.9);
+    border: 1.5px solid #00ffff;
+    border-radius: 20px;
+    padding: 6px 12px;
     display: block;
     z-index: 1000;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
     backdrop-filter: blur(10px);
-    width: 120px;
+    width: auto;
+    max-width: 140px;
     height: auto;
-    min-height: 80px;
     opacity: 0.7;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, box-shadow 0.3s ease;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
-/* On small viewports, make AI indicator inline instead of overlapping */
-@media (max-width: 900px) {
-    .ai-thinking {
-        position: relative;
-        top: auto;
-        left: auto;
-        width: 100%;
-        height: auto;
-        min-height: unset;
-        padding: 8px 12px;
-        opacity: 0.9;
-        order: -1;
-    }
-
-    .ai-thinking-content {
-        flex-direction: row;
-        gap: 10px;
-    }
-
-    .ai-thinking-title {
-        margin-bottom: 0;
-    }
+.ai-thinking.dragging {
+    cursor: grabbing;
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.6);
 }
 
 .ai-thinking.active {
     opacity: 1;
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.6), 0 4px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
 }
 
 .ai-thinking-content {
     text-align: center;
-    height: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
     align-items: center;
+    gap: 6px;
+    white-space: nowrap;
 }
 
 .ai-thinking-title {
     color: #00ffff;
-    font-size: 12px;
+    font-size: 10px;
     font-weight: bold;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+    margin-bottom: 0;
     text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
 }
 
 .ai-thinking-status {
     color: #ffffff;
-    font-size: 11px;
-    margin-bottom: 6px;
+    font-size: 9px;
+    margin-bottom: 0;
     font-weight: 500;
-    line-height: 1.2;
+    line-height: 1;
 }
 
 .ai-thinking-depth,
 .ai-thinking-confidence {
     color: #cccccc;
-    font-size: 10px;
-    margin-bottom: 2px;
-    line-height: 1.1;
+    font-size: 8px;
+    margin-bottom: 0;
+    line-height: 1;
+    display: none;
+}
+
+.ai-thinking.active .ai-thinking-depth,
+.ai-thinking.active .ai-thinking-confidence {
+    display: inline;
+}
+
+.ai-thinking.active .ai-thinking-content {
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .ai-thinking.active .ai-thinking-title::before {
     content: '';
     display: inline-block;
-    width: 12px;
-    height: 12px;
-    border: 2px solid rgba(0, 255, 255, 0.2);
-    border-top: 2px solid #00ffff;
+    width: 8px;
+    height: 8px;
+    border: 1.5px solid rgba(0, 255, 255, 0.2);
+    border-top: 1.5px solid #00ffff;
     border-radius: 50%;
     animation: spin 1s linear infinite;
-    margin-right: 6px;
+    margin-right: 4px;
     vertical-align: middle;
 }
 
@@ -1049,22 +1018,7 @@ body {
     animation: spin 1s linear infinite;
 }
 
-@media (max-width: 480px) {
-    .ai-thinking {
-        top: 10px;
-        right: 10px;
-        padding: 10px;
-    }
-
-    .ai-thinking-spinner {
-        width: 20px;
-        height: 20px;
-    }
-
-    .ai-thinking-text {
-        font-size: 10px;
-    }
-}
+/* (AI thinking mobile overrides consolidated above) */
 
 /* Settings Modal Styles */
 .modal {

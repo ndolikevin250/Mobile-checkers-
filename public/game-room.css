@@ -11,8 +11,8 @@ body {
 
 .container {
     max-width: none;
-    width: min(95vw, 95vh);
-    max-width: 800px;
+    width: min(90vw, 80vh);
+    max-width: 600px;
     padding: 10px;
     margin: 0 auto;
 }
@@ -536,65 +536,70 @@ body {
 
 /* Tablet */
 @media (max-width: 768px) {
+    .container {
+        width: min(92vw, 75vh);
+        max-width: 550px;
+    }
+
     .game-room-container {
-        padding: 12px;
+        padding: 10px;
     }
 
     .players-info {
-        padding: 12px;
-        margin: 12px 0;
+        padding: 8px;
+        margin: 8px 0;
     }
 
     .player {
-        min-width: 100px;
-        padding: 8px 12px;
-        font-size: 14px;
+        min-width: 80px;
+        padding: 6px 10px;
+        font-size: 13px;
     }
 
     .vs {
-        font-size: 18px;
-        margin: 0 10px;
+        font-size: 16px;
+        margin: 0 8px;
     }
 
     .game-container {
-        padding: 10px;
-        gap: 12px;
+        padding: 5px;
+        gap: 8px;
     }
 
     .info-panel {
-        padding: 10px 20px;
-        font-size: 1em;
-        margin-bottom: 10px;
+        padding: 8px 16px;
+        font-size: 0.9em;
+        margin-bottom: 8px;
     }
 
     .room-controls {
-        gap: 15px;
-        padding: 0 10px;
+        gap: 10px;
+        padding: 0 5px;
     }
 
     .theme-selector {
         gap: 6px;
-        flex-basis: 100%;
+        flex-basis: auto;
         justify-content: center;
-        margin-bottom: 10px;
+        margin-bottom: 0;
     }
 
     .theme-selector label {
-        font-size: 13px;
-        margin-right: 5px;
+        font-size: 12px;
+        margin-right: 4px;
     }
 
     .theme-dropdown {
-        min-width: 140px;
-        max-width: 180px;
-        font-size: 13px;
-        padding: 12px 14px;
+        min-width: 110px;
+        max-width: 150px;
+        font-size: 12px;
+        padding: 8px 10px;
     }
 
     .chat-button {
-        width: 45px !important;
-        height: 45px !important;
-        font-size: 22px !important;
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 20px !important;
     }
 
     .chat-container {
@@ -622,64 +627,79 @@ body {
 
 /* Mobile */
 @media (max-width: 480px) {
+    .container {
+        width: 95vw;
+        max-width: none;
+        padding: 5px;
+    }
+
     .game-room-container {
-        padding: 8px;
+        padding: 5px;
     }
 
     .game-room-container h1 {
-        font-size: 1.2em;
-        margin: 5px 0;
+        font-size: 1em;
+        margin: 3px 0;
     }
 
     .players-info {
-        padding: 8px;
-        margin: 8px 0;
+        padding: 6px;
+        margin: 4px 0;
         flex-wrap: nowrap;
     }
 
     .player {
         min-width: 0;
         flex: 1;
-        padding: 6px 8px;
-        font-size: 12px;
+        padding: 4px 6px;
+        font-size: 11px;
         word-break: break-all;
     }
 
     .vs {
-        font-size: 14px;
-        margin: 0 6px;
+        font-size: 12px;
+        margin: 0 4px;
         flex-shrink: 0;
     }
 
     .game-container {
-        padding: 5px;
-        gap: 8px;
+        padding: 2px;
+        gap: 4px;
     }
 
     .board-wrapper {
-        padding: 10px;
+        padding: 6px;
     }
 
     .info-panel {
-        padding: 8px 14px;
-        font-size: 0.85em;
-        margin-bottom: 6px;
+        padding: 6px 10px;
+        font-size: 0.75em;
+        margin-bottom: 4px;
     }
 
     .room-controls {
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 12px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .room-controls .cyber-button {
+        padding: 8px 14px;
+        font-size: 11px;
     }
 
     .theme-selector {
-        margin-bottom: 8px;
+        margin-bottom: 0;
     }
 
     .theme-dropdown {
-        width: 100%;
-        max-width: none;
+        width: auto;
+        max-width: 130px;
         min-width: 0;
+        padding: 8px 10px;
+        font-size: 12px;
     }
 
     .end-game-modal .modal-content {
@@ -708,16 +728,26 @@ body {
 /* Small phones */
 @media (max-width: 360px) {
     .board-wrapper {
-        padding: 8px;
+        padding: 4px;
     }
 
     .players-info {
-        padding: 6px;
+        padding: 4px;
     }
 
     .player {
-        font-size: 11px;
-        padding: 5px 6px;
+        font-size: 10px;
+        padding: 3px 5px;
+    }
+
+    .info-panel {
+        padding: 4px 8px;
+        font-size: 0.7em;
+    }
+
+    .room-controls .cyber-button {
+        padding: 6px 10px;
+        font-size: 10px;
     }
 }
 

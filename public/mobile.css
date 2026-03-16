@@ -196,15 +196,14 @@ body {
     }
 
     .ai-thinking {
-        width: 80px !important;
-        height: 80px !important;
-        padding: 5px !important;
+        padding: 3px 6px !important;
+        max-width: 100px !important;
     }
 
-    .ai-thinking-title { font-size: 8px !important; }
-    .ai-thinking-status,
+    .ai-thinking-title { font-size: 7px !important; }
+    .ai-thinking-status { font-size: 6px !important; }
     .ai-thinking-depth,
-    .ai-thinking-confidence { font-size: 7px !important; }
+    .ai-thinking-confidence { display: none !important; }
 
     .profile-icon {
         width: 35px !important;

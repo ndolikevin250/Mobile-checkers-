@@ -37,22 +37,12 @@ function getTurnIndicatorText(currentPlayer) {
 
 const style = document.createElement('style');
 style.textContent = `
-    .piece {
-        position: relative;
-        width: 56px;
-        height: 56px;
-        border-radius: 50%;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
-    
     .king-symbol {
         position: absolute;
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        font-size: 32px;
+        font-size: 1.2em;
         color: #4ecca3;
         text-shadow: 0 0 10px rgba(78, 204, 163, 0.5);
         opacity: 0;
@@ -60,7 +50,7 @@ style.textContent = `
         line-height: 1;
         pointer-events: none;
     }
-    
+
     .king .king-symbol {
         opacity: 1;
     }

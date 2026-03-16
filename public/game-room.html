@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Game Room</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="game-room.css">
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+    <!-- Matrix Rain Background Animation - Full Viewport -->
+    <canvas id="matrix-canvas" class="matrix-canvas"></canvas>
+
+    <!-- Profile Icon -->
+    <div class="profile-icon" id="profileIcon" onclick="openUserDashboard()" title="User Dashboard">
+        👤
+    </div>
+
+    <div class="container">
+        <div class="game-room-container cyber-border">
+            <h1 class="glitch-text">Game Room</h1>
+            <div class="players-info">
+                <div class="player player1" id="player1Info">Waiting...</div>
+                <div class="vs glitch-text">VS</div>
+                <div class="player player2" id="player2Info">Waiting...</div>
+            </div>
+            <div class="game-container">
+                <div class="info-panel">
+                    <div id="turn"></div>
+                </div>
+                <div class="board-wrapper">
+                    <div id="board" class="board"></div>
+                </div>
+            </div>
+            <div class="room-controls">
+                <div class="theme-selector">
+                    <label for="themeSelect">Theme:</label>
+                    <select id="themeSelect" class="theme-dropdown" onchange="changeTheme(this.value)">
+                        <option value="default">Default</option>
+                        <option value="cyberpunk">Cyberpunk</option>
+                        <option value="classic">Classic</option>
+                        <option value="neon">Neon</option>
+                        <option value="forest">Forest</option>
+                        <option value="ice">Ice</option>
+                        <option value="fire">Fire</option>
+                    </select>
+                </div>
+                <div class="chat-button" onclick="toggleChat()">
+                    💬
+                    <div class="chat-notification hidden">0</div>
+                </div>
+                <button class="cyber-button" id="soundToggle" onclick="toggleSound()">
+                    <span class="cyber-button__glitch"></span>
+                    <span class="cyber-button__text">🔊 Sound</span>
+                </button>
+                <button class="cyber-button" onclick="leaveRoom()">
+                    <span class="cyber-button__glitch"></span>
+                    <span class="cyber-button__text">Leave Room</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="chat-container hidden">
+        <div class="chat-header">
+            <span>Chat</span>
+            <button class="close-button" onclick="toggleChat()">✕</button>
+        </div>
+        <div class="chat-messages"></div>
+        <div class="chat-input">
+            <input type="text" placeholder="Type a message..." onkeypress="handleChatKeyPress(event)">
+            <button onclick="sendChatMessage()">Send</button>
+        </div>
+    </div>
+
+    <div class="end-game-modal hidden">
+        <div class="modal-content cyber-border">
+            <h2 class="glitch-text" id="winnerText"></h2>
+            <div class="modal-buttons">
+                <button class="cyber-button" onclick="requestRematch()">
+                    <span class="cyber-button__glitch"></span>
+                    <span class="cyber-button__text">Rematch</span>
+                </button>
+                <button class="cyber-button" onclick="endSession()">
+                    <span class="cyber-button__glitch"></span>
+                    <span class="cyber-button__text">End Session</span>
+                </button>
+            </div>
+            <div id="rematchStatus" class="hidden">Waiting for opponent...</div>
+        </div>
+    </div>
+
+    <!-- User Dashboard Modal -->
+    <div id="userDashboardModal" class="modal hidden">
+        <div class="modal-content dashboard-modal">
+            <div class="dashboard-header">
+                <h2>User Dashboard</h2>
+                <span class="close-btn" onclick="closeUserDashboard()">×</span>
+            </div>
+            <div class="dashboard-content">
+                <div class="user-info" id="userInfo">
+                    <!-- User information will be loaded here -->
+                </div>
+                <div class="dashboard-stats" id="dashboardStats">
+                    <!-- Dashboard statistics will be loaded here -->
+                </div>
+                <div class="dashboard-actions">
+                    <button class="btn" onclick="exportUserData()">Export Data</button>
+                    <button class="btn" onclick="clearUserData()">Clear Data</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="matrix-rain.js"></script>
+    <script src="sound-manager.js"></script>
+    <script src="game-room.js"></script>
+    <script src="mobile-touch.js"></script>
+</body>
+</html> 

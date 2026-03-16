@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Game Registration</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Registration Form -->
+        <div class="form-container" id="registrationForm">
+            <div class="cyber-border">
+                <h1 class="glitch-text">Welcome Player</h1>
+                <div class="options-grid">
+                    <button class="cyber-button" id="guestBtn">
+                        <span class="cyber-button__glitch"></span>
+                        <span class="cyber-button__text">Enter as Guest</span>
+                    </button>
+                    <button class="cyber-button" id="loginBtn">
+                        <span class="cyber-button__glitch"></span>
+                        <span class="cyber-button__text">Login</span>
+                    </button>
+                    <button class="cyber-button" id="createAccountBtn">
+                        <span class="cyber-button__glitch"></span>
+                        <span class="cyber-button__text">Create Account</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Mode Selection -->
+        <div class="form-container hidden" id="gameModeSelection">
+            <div class="cyber-border">
+                <h1 class="glitch-text">Select Game Mode</h1>
+                <div class="options-grid">
+                    <button class="cyber-button" id="singlePlayerBtn">
+                        <span class="cyber-button__glitch"></span>
+                        <span class="cyber-button__text">Single Player</span>
+                    </button>
+                    <button class="cyber-button" id="multiplayerBtn">
+                        <span class="cyber-button__glitch"></span>
+                        <span class="cyber-button__text">Multiplayer</span>
+                    </button>
+                    <button class="cyber-button back-button" id="backBtn">
+                        <span class="cyber-button__glitch"></span>
+                        <span class="cyber-button__text">Back</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Modal -->
+        <div class="modal hidden" id="loginModal">
+            <div class="modal-content cyber-border">
+                <h2 class="glitch-text">Login</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <input type="text" id="loginUsername" placeholder="Username" required>
+                    </div>
+                    <div class="form-group password-container">
+                        <input type="password" id="loginPassword" placeholder="Password" required>
+                        <button type="button" class="password-toggle" id="toggleLoginPassword">
+                            👁️
+                        </button>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="cyber-button">
+                            <span class="cyber-button__glitch"></span>
+                            <span class="cyber-button__text">Login</span>
+                        </button>
+                        <button type="button" class="cyber-button" id="cancelLoginBtn">
+                            <span class="cyber-button__glitch"></span>
+                            <span class="cyber-button__text">Cancel</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Create Account Modal -->
+        <div class="modal hidden" id="createAccountModal">
+            <div class="modal-content cyber-border">
+                <h2 class="glitch-text">Create Account</h2>
+                <form id="createAccountForm">
+                    <div class="form-group">
+                        <input type="text" id="createUsername" placeholder="Username" required>
+                    </div>
+                    <div class="form-group password-container">
+                        <input type="password" id="createPassword" placeholder="Password" required>
+                        <button type="button" class="password-toggle" id="toggleCreatePassword">
+                            👁️
+                        </button>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="cyber-button">
+                            <span class="cyber-button__glitch"></span>
+                            <span class="cyber-button__text">Create</span>
+                        </button>
+                        <button type="button" class="cyber-button" id="cancelCreateBtn">
+                            <span class="cyber-button__glitch"></span>
+                            <span class="cyber-button__text">Cancel</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Access Link (Hidden in footer) -->
+    <div style="position: fixed; bottom: 10px; right: 10px; font-size: 12px;">
+        <a href="admin-login.html" style="color: #666; text-decoration: none; opacity: 0.7;">Admin</a>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="mobile-touch.js"></script>
+</body>
+</html> 

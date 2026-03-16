@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Player Statistics</title>
+    <link rel="stylesheet" href="statistics.css">
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+    <!-- Background -->
+    <div class="stats-bg">
+        <div class="grid-overlay"></div>
+        <div class="vignette"></div>
+    </div>
+
+    <div class="stats-container">
+        <!-- Top Bar -->
+        <div class="stats-topbar">
+            <button class="back-btn" onclick="goBack()">
+                <span class="back-arrow">‹</span>
+                <span>BACK</span>
+            </button>
+            <div class="topbar-title">STATISTICS</div>
+            <div class="topbar-spacer"></div>
+        </div>
+
+        <!-- Player Card -->
+        <div class="player-card">
+            <div class="player-card-left">
+                <div class="player-card-avatar" id="playerAvatar">♟</div>
+                <div class="player-card-info">
+                    <div class="player-card-name" id="playerName">PLAYER</div>
+                    <div class="player-card-rank" id="playerRank">ROOKIE</div>
+                </div>
+            </div>
+            <div class="player-card-right">
+                <div class="win-rate-ring">
+                    <svg viewBox="0 0 80 80">
+                        <circle class="ring-bg" cx="40" cy="40" r="34" />
+                        <circle class="ring-fill" id="winRateRing" cx="40" cy="40" r="34" />
+                    </svg>
+                    <div class="ring-text">
+                        <span class="ring-value" id="winRateValue">0%</span>
+                        <span class="ring-label">WIN RATE</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Core Stats -->
+        <div class="core-stats">
+            <div class="core-stat">
+                <div class="core-stat-value wins" id="totalWins">0</div>
+                <div class="core-stat-bar"><div class="core-stat-fill wins-fill" id="winsBar"></div></div>
+                <div class="core-stat-label">VICTORIES</div>
+            </div>
+            <div class="core-stat">
+                <div class="core-stat-value losses" id="totalLosses">0</div>
+                <div class="core-stat-bar"><div class="core-stat-fill losses-fill" id="lossesBar"></div></div>
+                <div class="core-stat-label">DEFEATS</div>
+            </div>
+            <div class="core-stat">
+                <div class="core-stat-value draws" id="totalDraws">0</div>
+                <div class="core-stat-bar"><div class="core-stat-fill draws-fill" id="drawsBar"></div></div>
+                <div class="core-stat-label">DRAWS</div>
+            </div>
+            <div class="core-stat">
+                <div class="core-stat-value total" id="totalGames">0</div>
+                <div class="core-stat-bar"><div class="core-stat-fill total-fill" id="gamesBar"></div></div>
+                <div class="core-stat-label">TOTAL</div>
+            </div>
+        </div>
+
+        <!-- Detail Cards -->
+        <div class="detail-row">
+            <div class="detail-card">
+                <div class="detail-icon">⏱</div>
+                <div class="detail-info">
+                    <div class="detail-value" id="totalPlayTime">0m</div>
+                    <div class="detail-label">PLAY TIME</div>
+                </div>
+            </div>
+            <div class="detail-card">
+                <div class="detail-icon">🎯</div>
+                <div class="detail-info">
+                    <div class="detail-value" id="favDifficulty">Medium</div>
+                    <div class="detail-label">FAV. DIFFICULTY</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="detail-row">
+            <div class="detail-card">
+                <div class="detail-icon">📅</div>
+                <div class="detail-info">
+                    <div class="detail-value" id="lastPlayed">Never</div>
+                    <div class="detail-label">LAST PLAYED</div>
+                </div>
+            </div>
+            <div class="detail-card">
+                <div class="detail-icon">🔥</div>
+                <div class="detail-info">
+                    <div class="detail-value" id="winStreak">0</div>
+                    <div class="detail-label">BEST STREAK</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Difficulty Breakdown -->
+        <div class="section-label">PERFORMANCE BY DIFFICULTY</div>
+        <div class="difficulty-breakdown">
+            <div class="diff-row">
+                <div class="diff-name easy">EASY</div>
+                <div class="diff-bar-track">
+                    <div class="diff-bar-fill easy-fill" id="easyBar"></div>
+                </div>
+                <div class="diff-record" id="easyRecord">0-0</div>
+            </div>
+            <div class="diff-row">
+                <div class="diff-name medium">MEDIUM</div>
+                <div class="diff-bar-track">
+                    <div class="diff-bar-fill medium-fill" id="mediumBar"></div>
+                </div>
+                <div class="diff-record" id="mediumRecord">0-0</div>
+            </div>
+            <div class="diff-row">
+                <div class="diff-name hard">HARD</div>
+                <div class="diff-bar-track">
+                    <div class="diff-bar-fill hard-fill" id="hardBar"></div>
+                </div>
+                <div class="diff-record" id="hardRecord">0-0</div>
+            </div>
+        </div>
+
+        <!-- Recent Games -->
+        <div class="section-label">RECENT MATCHES</div>
+        <div class="recent-games" id="recentGames">
+            <div class="empty-state">No matches played yet</div>
+        </div>
+    </div>
+
+    <script src="statistics.js"></script>
+    <script src="mobile-touch.js"></script>
+</body>
+</html>

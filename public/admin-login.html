@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile.css">
+    <style>
+        /* Override global styles that might interfere */
+        body {
+            display: block !important;
+        }
+
+        .admin-login-container {
+            max-width: 400px;
+            margin: 100px auto;
+            padding: 40px;
+        }
+
+        .admin-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .admin-warning {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid #ffaa00;
+            color: #ffaa00;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .admin-form-group {
+            margin-bottom: 20px;
+        }
+
+        .admin-form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        .admin-form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            position: relative;
+            z-index: 10;
+            cursor: text;
+            pointer-events: auto !important;
+        }
+
+        .admin-form-group input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-container input {
+            flex: 1;
+            padding-right: 50px; /* Make room for the toggle button */
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #00ffff;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 5px;
+            z-index: 102;
+            pointer-events: auto !important;
+        }
+
+        .password-toggle:hover {
+            color: #00aaff;
+        }
+
+        /* Override any global styles that might interfere */
+        .admin-form-group input,
+        .admin-button {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+        }
+
+        .admin-button {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+
+        .admin-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            border: none;
+            border-radius: 5px;
+            color: black;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+        }
+
+        .admin-back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            text-decoration: none;
+            position: relative;
+            z-index: 200;
+            cursor: pointer;
+            pointer-events: auto !important;
+        }
+
+        .admin-back-link:hover {
+            color: #00ffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-login-container">
+        <div class="cyber-border" style="position: relative; z-index: 1;">
+            <div class="admin-header">
+                <h1 class="glitch-text">ADMIN ACCESS</h1>
+                <div class="admin-warning">
+                    ⚠️ AUTHORIZED PERSONNEL ONLY ⚠️<br>
+                    <small>Full system access granted</small>
+                </div>
+            </div>
+
+            <form id="adminLoginForm" style="position: relative; z-index: 100;">
+                <div class="admin-form-group">
+                    <label for="adminUsername">Admin Username</label>
+                    <input type="text" id="adminUsername" placeholder="Enter admin username" required style="position: relative; z-index: 101;">
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="adminPassword">Admin Password</label>
+                    <div class="password-container">
+                        <input type="password" id="adminPassword" placeholder="Enter admin password" required style="position: relative; z-index: 101;">
+                        <button type="button" class="password-toggle" onclick="togglePassword('adminPassword', this)">👁️</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="admin-button" style="position: relative; z-index: 101;">ACCESS ADMIN PANEL</button>
+            </form>
+
+            <a href="admin-register.html" class="admin-back-link">← Need to create admin account?</a>
+        </div>
+    </div>
+
+    <script>
+        // Check if already logged in and ensure form elements are clickable
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force enable pointer events and ensure elements are focusable
+            const inputs = document.querySelectorAll('input, button');
+            inputs.forEach(element => {
+                element.style.pointerEvents = 'auto';
+                element.style.cursor = element.tagName === 'INPUT' ? 'text' : 'pointer';
+                element.tabIndex = 0; // Ensure tab navigation works
+            });
+
+            // Add click event listeners to ensure responsiveness
+            inputs.forEach(element => {
+                element.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (element.tagName === 'INPUT') {
+                        element.focus();
+                    }
+                });
+            });
+
+            // Ensure links are clickable
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.style.pointerEvents = 'auto';
+                link.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // Allow normal link behavior
+                });
+            });
+
+            const adminToken = localStorage.getItem('adminToken');
+            if (adminToken) {
+                // Already logged in, redirect to dashboard
+                window.location.href = 'admin-dashboard.html';
+            }
+        });
+
+        function showFeedback(message, type) {
+            // Remove existing feedback
+            const existingFeedback = document.querySelector('.form-feedback');
+            if (existingFeedback) {
+                existingFeedback.remove();
+            }
+
+            // Create new feedback element
+            const feedbackDiv = document.createElement('div');
+            feedbackDiv.className = `form-feedback ${type}`;
+            feedbackDiv.textContent = message;
+
+            // Insert after form
+            const form = document.getElementById('adminLoginForm');
+            form.parentNode.insertBefore(feedbackDiv, form.nextSibling);
+        }
+
+        function setLoading(loading) {
+            const button = document.querySelector('.admin-button');
+
+            if (loading) {
+                button.disabled = true;
+                button.innerHTML = '<span class="loading"></span> Authenticating...';
+            } else {
+                button.disabled = false;
+                button.innerHTML = 'ACCESS ADMIN PANEL';
+            }
+        }
+
+        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value;
+
+            // Basic validation
+            if (!username || !password) {
+                showFeedback('❌ Please enter both username and password', 'error');
+                return;
+            }
+
+            setLoading(true);
+
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store admin token and info
+                    localStorage.setItem('adminToken', data.token);
+                    localStorage.setItem('adminUsername', data.username);
+                    localStorage.setItem('adminRole', data.role);
+
+                    // Also set regular user session for seamless game access
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('username', data.username);
+                    localStorage.setItem('userType', 'registered');
+
+                    // Clear any localStorage theme preferences from guest sessions
+                    localStorage.removeItem('boardTheme');
+                    localStorage.removeItem('singlePlayerTheme');
+
+                    showFeedback('✅ Login successful! Redirecting to dashboard...', 'success');
+
+                    // Redirect to admin dashboard
+                    setTimeout(() => {
+                        window.location.href = 'admin-dashboard.html';
+                    }, 1500);
+                } else {
+                    showFeedback('❌ Login failed: ' + data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Admin login error:', error);
+                showFeedback('❌ Network error. Please check your connection and try again.', 'error');
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        // Add loading animation styles
+        const style = document.createElement('style');
+        style.textContent = `
+            .form-feedback {
+                margin-top: 15px;
+                padding: 10px;
+                border-radius: 5px;
+                text-align: center;
+                display: block;
+            }
+
+            .form-feedback.success {
+                background: rgba(0, 255, 0, 0.1);
+                border: 1px solid #00aa00;
+                color: #00cc00;
+            }
+
+            .form-feedback.error {
+                background: rgba(255, 0, 0, 0.1);
+                border: 1px solid #ff4444;
+                color: #ff6666;
+            }
+
+            .loading {
+                display: inline-block;
+                width: 20px;
+                height: 20px;
+                border: 3px solid rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                border-top-color: #00ffff;
+                animation: spin 1s ease-in-out infinite;
+                margin-right: 10px;
+            }
+
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+
+            .admin-button:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+                transform: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Password toggle function
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.textContent = '🙈'; // Hide icon
+            } else {
+                input.type = 'password';
+                button.textContent = '👁️'; // Show icon
+            }
+        }
+    </script>
+</body>
+</html>

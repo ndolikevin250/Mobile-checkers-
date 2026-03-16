@@ -1,0 +1,511 @@
+/* ═══════════════════════════════════════════════════════
+   STATISTICS PAGE — Cyberpunk Data Terminal
+   ═══════════════════════════════════════════════════════ */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background: #0a0a12;
+    font-family: 'Segoe UI', 'Arial', sans-serif;
+    color: #e0e0e0;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ── Background ── */
+.stats-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+}
+
+.stats-bg .grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(0, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.02) 1px, transparent 1px);
+    background-size: 30px 30px;
+}
+
+.stats-bg .vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.8) 100%);
+}
+
+/* ── Container ── */
+.stats-container {
+    position: relative;
+    z-index: 1;
+    max-width: 460px;
+    margin: 0 auto;
+    padding: 16px 14px 40px;
+    min-height: 100vh;
+}
+
+/* ── Top Bar ── */
+.stats-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    animation: fadeDown 0.3s ease both;
+}
+
+.back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0,255,255,0.06);
+    border: 1px solid rgba(0,255,255,0.15);
+    border-radius: 8px;
+    color: rgba(0,255,255,0.7);
+    padding: 8px 14px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    background: rgba(0,255,255,0.12);
+    color: #0ff;
+    border-color: rgba(0,255,255,0.3);
+}
+
+.back-arrow {
+    font-size: 16px;
+    line-height: 1;
+}
+
+.topbar-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    color: rgba(0,255,255,0.4);
+}
+
+.topbar-spacer {
+    width: 80px;
+}
+
+/* ── Player Card ── */
+.player-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px;
+    background: rgba(10, 12, 25, 0.8);
+    border: 1px solid rgba(0,255,255,0.1);
+    border-radius: 12px;
+    margin-bottom: 14px;
+    animation: fadeUp 0.4s ease 0.05s both;
+}
+
+.player-card-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.player-card-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(0,255,255,0.12), rgba(255,0,255,0.12));
+    border: 1.5px solid rgba(0,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    color: #0ff;
+}
+
+.player-card-name {
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.player-card-rank {
+    font-size: 10px;
+    color: rgba(0,255,255,0.5);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 2px;
+}
+
+/* ── Win Rate Ring ── */
+.player-card-right {
+    flex-shrink: 0;
+}
+
+.win-rate-ring {
+    position: relative;
+    width: 72px;
+    height: 72px;
+}
+
+.win-rate-ring svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.ring-bg {
+    fill: none;
+    stroke: rgba(0,255,255,0.08);
+    stroke-width: 5;
+}
+
+.ring-fill {
+    fill: none;
+    stroke: #0ff;
+    stroke-width: 5;
+    stroke-linecap: round;
+    stroke-dasharray: 213.6;
+    stroke-dashoffset: 213.6;
+    transition: stroke-dashoffset 1.2s ease;
+    filter: drop-shadow(0 0 4px rgba(0,255,255,0.4));
+}
+
+.ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ring-value {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0ff;
+    line-height: 1.1;
+}
+
+.ring-label {
+    font-size: 6px;
+    letter-spacing: 1.5px;
+    color: rgba(0,255,255,0.4);
+    text-transform: uppercase;
+}
+
+/* ── Core Stats ── */
+.core-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+    animation: fadeUp 0.4s ease 0.1s both;
+}
+
+.core-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px 6px 10px;
+    background: rgba(10, 12, 25, 0.7);
+    border: 1px solid rgba(0,255,255,0.08);
+    border-radius: 10px;
+}
+
+.core-stat-value {
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 6px;
+}
+
+.core-stat-value.wins { color: #0f8; }
+.core-stat-value.losses { color: #f55; }
+.core-stat-value.draws { color: #fa0; }
+.core-stat-value.total { color: #0cf; }
+
+.core-stat-bar {
+    width: 100%;
+    height: 3px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 2px;
+    margin-bottom: 6px;
+    overflow: hidden;
+}
+
+.core-stat-fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 1s ease 0.3s;
+    width: 0;
+}
+
+.wins-fill { background: linear-gradient(90deg, #0f8, #0fa); }
+.losses-fill { background: linear-gradient(90deg, #f55, #f77); }
+.draws-fill { background: linear-gradient(90deg, #fa0, #fc0); }
+.total-fill { background: linear-gradient(90deg, #0cf, #0ef); }
+
+.core-stat-label {
+    font-size: 8px;
+    letter-spacing: 1.5px;
+    color: rgba(200,200,210,0.4);
+    text-transform: uppercase;
+}
+
+/* ── Detail Cards ── */
+.detail-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+    animation: fadeUp 0.4s ease 0.15s both;
+}
+
+.detail-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    background: rgba(10, 12, 25, 0.6);
+    border: 1px solid rgba(0,255,255,0.06);
+    border-radius: 10px;
+}
+
+.detail-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+    width: 30px;
+    text-align: center;
+}
+
+.detail-info {
+    min-width: 0;
+}
+
+.detail-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #e8e8e8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.detail-label {
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: rgba(200,200,210,0.35);
+    text-transform: uppercase;
+    margin-top: 1px;
+}
+
+/* ── Section Label ── */
+.section-label {
+    font-size: 9px;
+    letter-spacing: 2.5px;
+    color: rgba(0,255,255,0.3);
+    text-transform: uppercase;
+    font-weight: 600;
+    margin: 18px 0 10px 4px;
+    animation: fadeUp 0.4s ease 0.2s both;
+}
+
+/* ── Difficulty Breakdown ── */
+.difficulty-breakdown {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 16px;
+    background: rgba(10, 12, 25, 0.6);
+    border: 1px solid rgba(0,255,255,0.06);
+    border-radius: 10px;
+    margin-bottom: 8px;
+    animation: fadeUp 0.4s ease 0.25s both;
+}
+
+.diff-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.diff-name {
+    width: 60px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    flex-shrink: 0;
+}
+
+.diff-name.easy { color: #0f8; }
+.diff-name.medium { color: #fa0; }
+.diff-name.hard { color: #f55; }
+
+.diff-bar-track {
+    flex: 1;
+    height: 6px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.diff-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 1s ease 0.5s;
+    width: 0;
+}
+
+.easy-fill { background: linear-gradient(90deg, rgba(0,255,136,0.6), #0f8); }
+.medium-fill { background: linear-gradient(90deg, rgba(255,170,0,0.6), #fa0); }
+.hard-fill { background: linear-gradient(90deg, rgba(255,85,85,0.6), #f55); }
+
+.diff-record {
+    width: 45px;
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(220,220,230,0.7);
+    text-align: right;
+    flex-shrink: 0;
+}
+
+/* ── Recent Games ── */
+.recent-games {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    animation: fadeUp 0.4s ease 0.3s both;
+}
+
+.game-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: rgba(10, 12, 25, 0.6);
+    border: 1px solid rgba(0,255,255,0.05);
+    border-radius: 8px;
+    border-left: 3px solid transparent;
+}
+
+.game-entry.win { border-left-color: #0f8; }
+.game-entry.loss { border-left-color: #f55; }
+.game-entry.draw { border-left-color: #fa0; }
+
+.game-result-badge {
+    width: 32px;
+    height: 20px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+}
+
+.game-entry.win .game-result-badge {
+    background: rgba(0,255,136,0.12);
+    color: #0f8;
+    border: 1px solid rgba(0,255,136,0.2);
+}
+
+.game-entry.loss .game-result-badge {
+    background: rgba(255,85,85,0.12);
+    color: #f55;
+    border: 1px solid rgba(255,85,85,0.2);
+}
+
+.game-entry.draw .game-result-badge {
+    background: rgba(255,170,0,0.12);
+    color: #fa0;
+    border: 1px solid rgba(255,170,0,0.2);
+}
+
+.game-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.game-opponent {
+    font-size: 12px;
+    font-weight: 600;
+    color: #ddd;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.game-meta {
+    font-size: 9px;
+    color: rgba(200,200,210,0.35);
+    margin-top: 1px;
+}
+
+.game-date {
+    font-size: 10px;
+    color: rgba(200,200,210,0.3);
+    flex-shrink: 0;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 30px 16px;
+    font-size: 12px;
+    color: rgba(200,200,210,0.3);
+    background: rgba(10, 12, 25, 0.5);
+    border: 1px dashed rgba(0,255,255,0.08);
+    border-radius: 10px;
+    letter-spacing: 1px;
+}
+
+/* ── Animations ── */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 400px) {
+    .stats-container {
+        padding: 12px 10px 30px;
+    }
+
+    .player-card {
+        padding: 14px;
+    }
+
+    .core-stat-value {
+        font-size: 18px;
+    }
+
+    .core-stats {
+        gap: 6px;
+    }
+
+    .detail-card {
+        padding: 10px;
+        gap: 8px;
+    }
+
+    .win-rate-ring {
+        width: 62px;
+        height: 62px;
+    }
+}
+
+@media (max-width: 340px) {
+    .core-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

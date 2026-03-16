@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Command Center</title>
+    <link rel="stylesheet" href="game-mode.css">
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="hub-bg">
+        <div class="grid-overlay"></div>
+        <div class="scan-line"></div>
+        <div class="vignette"></div>
+    </div>
+
+    <div class="hub-container">
+        <!-- Header / User Bar -->
+        <div class="hub-header">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">♟</div>
+                <div class="user-details">
+                    <div class="user-name" id="userName">PLAYER</div>
+                    <div class="user-rank" id="userRank">ROOKIE</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="header-btn" id="friendsHeaderBtn" onclick="navigate('friends')" title="Friends">
+                    ♟
+                    <span class="notif-dot" id="friendNotif"></span>
+                </div>
+                <div class="header-btn logout-btn" onclick="goBackToWelcome()" title="Logout">
+                    ⏻
+                </div>
+            </div>
+        </div>
+
+        <!-- Play Modes -->
+        <div class="section-title">Play</div>
+        <div class="play-modes">
+            <div class="mode-card" onclick="selectGameMode('single')">
+                <div class="mode-icon single">⚔</div>
+                <div class="mode-text">
+                    <div class="mode-title">Single Player</div>
+                    <div class="mode-desc">Challenge the AI across three difficulty levels</div>
+                </div>
+                <div class="mode-arrow">›</div>
+            </div>
+
+            <div class="mode-card" onclick="selectGameMode('multiplayer')">
+                <span class="live-badge">LIVE</span>
+                <div class="mode-icon multi">⚡</div>
+                <div class="mode-text">
+                    <div class="mode-title">Multiplayer</div>
+                    <div class="mode-desc">Play real opponents in ranked matches</div>
+                </div>
+                <div class="mode-arrow">›</div>
+            </div>
+
+            <div class="mode-card" onclick="selectGameMode('tournament')">
+                <div class="mode-icon tournament">🏆</div>
+                <div class="mode-text">
+                    <div class="mode-title">Tournament</div>
+                    <div class="mode-desc">4-player elimination brackets for glory</div>
+                </div>
+                <div class="mode-arrow">›</div>
+            </div>
+        </div>
+
+        <!-- Feature Grid -->
+        <div class="section-title" id="hubTitle">Hub</div>
+        <div class="feature-grid" id="hubSection">
+            <div class="feature-card" id="friendsCard" onclick="navigate('friends')">
+                <div class="feature-icon friends">♟</div>
+                <div class="feature-title">Friends</div>
+                <span class="feature-badge" id="friendsBadge">0</span>
+            </div>
+
+            <div class="feature-card" onclick="navigate('stats')">
+                <div class="feature-icon stats">📊</div>
+                <div class="feature-title">Statistics</div>
+            </div>
+
+            <div class="feature-card coming-soon">
+                <div class="feature-icon achievements">🎖</div>
+                <div class="feature-title">Achievements</div>
+            </div>
+
+            <div class="feature-card coming-soon">
+                <div class="feature-icon leaderboard">👑</div>
+                <div class="feature-title">Leaderboard</div>
+            </div>
+
+            <div class="feature-card coming-soon">
+                <div class="feature-icon daily">🎁</div>
+                <div class="feature-title">Daily Rewards</div>
+            </div>
+
+            <div class="feature-card coming-soon">
+                <div class="feature-icon settings">⚙</div>
+                <div class="feature-title">Settings</div>
+            </div>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="quick-stats" id="quickStats">
+            <div class="stat-chip">
+                <div class="stat-value" id="statWins">0</div>
+                <div class="stat-label">Wins</div>
+            </div>
+            <div class="stat-chip">
+                <div class="stat-value" id="statLosses">0</div>
+                <div class="stat-label">Losses</div>
+            </div>
+            <div class="stat-chip">
+                <div class="stat-value" id="statGames">0</div>
+                <div class="stat-label">Games</div>
+            </div>
+            <div class="stat-chip">
+                <div class="stat-value" id="statElo">0%</div>
+                <div class="stat-label">Win Rate</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game-mode.js"></script>
+    <script src="mobile-touch.js"></script>
+</body>
+</html>

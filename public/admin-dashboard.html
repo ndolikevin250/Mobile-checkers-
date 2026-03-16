@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Admin Dashboard - Full System Control</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile.css">
+    <style>
+        .admin-dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+        }
+
+        .admin-title {
+            color: #00ffff;
+            font-size: 2em;
+            margin: 0;
+        }
+
+        .admin-info {
+            color: #888;
+            font-size: 14px;
+        }
+
+        .play-as-user-btn {
+            background: linear-gradient(45deg, #00aa00, #00ff00);
+            color: black;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            margin-left: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .play-as-user-btn:hover {
+            background: linear-gradient(45deg, #00cc00, #22ff22);
+            transform: scale(1.05);
+        }
+
+        .admin-logout {
+            background: linear-gradient(45deg, #ff4444, #ff6666);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .admin-logout:hover {
+            background: linear-gradient(45deg, #ff6666, #ff8888);
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .admin-card {
+            background: rgba(0, 20, 40, 0.8);
+            border: 1px solid #00ffff;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .admin-card h3 {
+            color: #00ffff;
+            margin-top: 0;
+            border-bottom: 1px solid #00ffff;
+            padding-bottom: 10px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-item {
+            background: rgba(0, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #00ffff;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.3);
+        }
+
+        .admin-table th {
+            background: rgba(0, 255, 255, 0.1);
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        .admin-table tr:hover {
+            background: rgba(0, 255, 255, 0.05);
+        }
+
+        .delete-btn {
+            background: #ff4444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .delete-btn:hover {
+            background: #ff6666;
+        }
+
+        .system-info {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid #ffaa00;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .system-info h4 {
+            color: #ffaa00;
+            margin-top: 0;
+        }
+
+        .system-info pre {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            overflow-x: auto;
+        }
+
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #00ffff;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: #888;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            color: #00ffff;
+            border-bottom-color: #00ffff;
+        }
+
+        .tab-btn:hover {
+            color: #00ffff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .refresh-btn {
+            background: #00aa00;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .refresh-btn:hover {
+            background: #00cc00;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .admin-dashboard {
+                padding: 10px;
+            }
+
+            .admin-header {
+                flex-direction: column;
+                gap: 12px;
+                text-align: center;
+                padding: 15px;
+            }
+
+            .admin-title {
+                font-size: 1.4em;
+            }
+
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .tab-buttons {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+
+            .tab-btn {
+                padding: 8px 12px;
+                font-size: 12px;
+                flex: 1;
+                min-width: 80px;
+                text-align: center;
+            }
+
+            .admin-table {
+                font-size: 12px;
+            }
+
+            .admin-table th,
+            .admin-table td {
+                padding: 8px 6px;
+            }
+
+            .play-as-user-btn {
+                margin-left: 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .stat-value {
+                font-size: 1.5em;
+            }
+
+            .admin-card {
+                padding: 12px;
+            }
+
+            .admin-table {
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-dashboard">
+        <div class="admin-header">
+            <div>
+                <h1 class="admin-title">ADMIN DASHBOARD</h1>
+                <div class="admin-info">Full System Control - External & Internal Access</div>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <button class="play-as-user-btn" onclick="playAsUser()">🎮 PLAY AS USER</button>
+                <button class="admin-logout" onclick="logout()">LOGOUT</button>
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="admin-grid">
+            <div class="admin-card">
+                <h3>System Statistics</h3>
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalUsers">-</span>
+                        <span class="stat-label">Total Users</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalAdmins">-</span>
+                        <span class="stat-label">Admins</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalGames">-</span>
+                        <span class="stat-label">Total Games</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="activeMatches">-</span>
+                        <span class="stat-label">Active Matches</span>
+                    </div>
+                </div>
+                <button class="refresh-btn" onclick="loadDashboardData()">Refresh Data</button>
+            </div>
+
+            <div class="admin-card">
+                <h3>System Information</h3>
+                <div class="system-info">
+                    <h4>Internal System Status</h4>
+                    <div id="systemInfo">Loading...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Management Tabs -->
+        <div class="admin-card">
+            <h3>Data Management</h3>
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab('users')">User Management</button>
+                <button class="tab-btn" onclick="switchTab('games')">Game Management</button>
+                <button class="tab-btn" onclick="switchTab('ai-testing')">AI Testing</button>
+                <button class="tab-btn" onclick="switchTab('database')">Database Inspector</button>
+            </div>
+
+            <!-- Users Tab -->
+            <div id="users-tab" class="tab-content active">
+                <h4>All Registered Users</h4>
+                <table class="admin-table" id="usersTable">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>User ID</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr><td colspan="3">Loading users...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Games Tab -->
+            <div id="games-tab" class="tab-content">
+                <h4>All Game States</h4>
+                <div style="margin-bottom: 15px;">
+                    <button class="refresh-btn" onclick="cleanupActiveGames()" style="background: #ff4444;">🔥 Cleanup Active Games</button>
+                    <span style="margin-left: 10px; font-size: 12px; color: #ccc;">Marks orphaned active games as completed</span>
+                    <br>
+                    <button class="refresh-btn" onclick="cleanupOldGames()" style="background: #ff6b6b; margin-top: 5px;">🧹 Cleanup Old Games</button>
+                    <span style="margin-left: 10px; font-size: 12px; color: #ccc;">Removes completed games older than 7 days</span>
+                </div>
+                <table class="admin-table" id="gamesTable">
+                    <thead>
+                        <tr>
+                            <th>Match ID</th>
+                            <th>Current Player</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gamesTableBody">
+                        <tr><td colspan="4">Loading games...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- AI Testing Tab -->
+            <div id="ai-testing-tab" class="tab-content">
+                <h4>AI Performance Testing & Analysis</h4>
+
+                <!-- AI Testing Controls -->
+                <div class="ai-testing-controls" style="margin-bottom: 20px;">
+                    <button class="refresh-btn" onclick="runAIPerformanceTest()">Run Performance Test</button>
+                    <button class="refresh-btn" onclick="analyzeAIPatterns()">Analyze Patterns</button>
+                    <button class="refresh-btn" onclick="compareAIDifficulties()">Compare Difficulties</button>
+                    <button class="refresh-btn" onclick="loadRealGameResults()">Real Game Results</button>
+                </div>
+
+                <!-- Test Results Display -->
+                <div id="aiTestResults" class="system-info" style="display: none;">
+                    <h4>Test Results</h4>
+                    <div id="testResultsContent">No tests run yet. Click a button above to start testing.</div>
+                </div>
+
+                <!-- AI Statistics -->
+                <div class="ai-stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 20px;">
+                    <div class="stat-item">
+                        <span class="stat-value" id="easyPatterns">-</span>
+                        <span class="stat-label">Easy AI Patterns</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="mediumPatterns">-</span>
+                        <span class="stat-label">Medium AI Patterns</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="hardPatterns">-</span>
+                        <span class="stat-label">Hard AI Patterns</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value" id="totalRealGames">-</span>
+                        <span class="stat-label">Real Games Played</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Database Inspector Tab -->
+            <div id="database-tab" class="tab-content">
+                <h4>Database Collections Inspector</h4>
+                <div class="system-info">
+                    <h4>Raw Database Access</h4>
+                    <p>This section provides direct access to internal database structures:</p>
+                    <ul>
+                        <li><strong>Users Collection:</strong> All registered user accounts</li>
+                        <li><strong>Admins Collection:</strong> Administrator accounts</li>
+                        <li><strong>GameStates Collection:</strong> Active and completed games</li>
+                        <li><strong>ColorPreferences Collection:</strong> User customization settings</li>
+                        <li><strong>UserPreferences Collection:</strong> Game preferences and settings</li>
+                        <li><strong>SinglePlayerGames Collection:</strong> AI learning data</li>
+                    </ul>
+                    <div id="databaseInspector">Use the tabs above to inspect different collections</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Check admin authentication
+        const adminToken = localStorage.getItem('adminToken');
+        const adminUsername = localStorage.getItem('adminUsername');
+
+        if (!adminToken || !adminUsername) {
+            window.location.href = 'admin-login.html';
+        }
+
+        // Load dashboard data on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadDashboardData();
+            loadUsers();
+            loadGames();
+        });
+
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('/api/admin/dashboard', {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Dashboard stats loaded:', data.stats);
+
+                    // Auto-cleanup orphaned active games for accurate stats
+                    if (data.stats.activeMatches > 0) {
+                        console.log('Checking for orphaned active games...');
+                        try {
+                            await fetch('/api/admin/cleanup-active-games', {
+                                method: 'POST',
+                                headers: {
+                                    'Authorization': `Bearer ${adminToken}`
+                                }
+                            });
+                            // Reload data after cleanup
+                            const cleanupResponse = await fetch('/api/admin/dashboard', {
+                                headers: {
+                                    'Authorization': `Bearer ${adminToken}`
+                                }
+                            });
+                            if (cleanupResponse.ok) {
+                                const cleanupData = await cleanupResponse.json();
+                                updateStats(cleanupData.stats);
+                                return;
+                            }
+                        } catch (cleanupError) {
+                            console.error('Auto-cleanup failed:', cleanupError);
+                        }
+                    }
+
+                    updateStats(data.stats);
+                } else if (response.status === 401 || response.status === 403) {
+                    // Token expired or invalid
+                    logout();
+                } else {
+                    console.error('Failed to load dashboard data');
+                }
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+            }
+        }
+
+        function updateStats(stats) {
+            document.getElementById('totalUsers').textContent = stats.totalUsers;
+            document.getElementById('totalAdmins').textContent = stats.totalAdmins;
+            document.getElementById('totalGames').textContent = stats.totalGames;
+            document.getElementById('activeMatches').textContent = stats.activeMatches;
+
+            // Update system info
+            const systemInfo = document.getElementById('systemInfo');
+            systemInfo.innerHTML = `
+                <strong>Uptime:</strong> ${Math.floor(stats.systemInfo.uptime / 3600)}h ${Math.floor((stats.systemInfo.uptime % 3600) / 60)}m<br>
+                <strong>Memory Usage:</strong> ${(stats.systemInfo.memoryUsage.heapUsed / 1024 / 1024).toFixed(2)} MB<br>
+                <strong>Node Version:</strong> ${stats.systemInfo.nodeVersion}<br>
+                <strong>Platform:</strong> ${stats.systemInfo.platform}
+            `;
+        }
+
+        async function loadUsers() {
+            try {
+                const response = await fetch('/api/admin/users', {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    displayUsers(data.users);
+                }
+            } catch (error) {
+                console.error('Error loading users:', error);
+            }
+        }
+
+        function displayUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3">No users found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = users.map(user => `
+                <tr>
+                    <td>${user.username}</td>
+                    <td>${user._id}</td>
+                    <td><button class="delete-btn" onclick="deleteUser('${user._id}')">Delete</button></td>
+                </tr>
+            `).join('');
+        }
+
+        async function loadGames() {
+            try {
+                const response = await fetch('/api/admin/games', {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Games loaded:', data.games.length, 'games');
+                    displayGames(data.games);
+                }
+            } catch (error) {
+                console.error('Error loading games:', error);
+            }
+        }
+
+        function displayGames(games) {
+            console.log('Displaying games:', games);
+            const tbody = document.getElementById('gamesTableBody');
+            if (games.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="4">No games found</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = games.map(game => `
+                <tr>
+                    <td>${game.matchId}</td>
+                    <td>${game.currentPlayer || 'Finished'}</td>
+                    <td>${game.currentPlayer ? 'Active' : 'Completed'}</td>
+                    <td><button class="delete-btn" onclick="deleteGame('${game._id}')">Delete</button></td>
+                </tr>
+            `).join('');
+        }
+
+        async function deleteUser(userId) {
+            if (!confirm('Are you sure you want to delete this user? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/admin/users/${userId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('User deleted successfully');
+                    loadUsers();
+                    loadDashboardData();
+                } else {
+                    alert('Failed to delete user');
+                }
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                alert('Error deleting user');
+            }
+        }
+
+        async function deleteGame(gameId) {
+            if (!confirm('Are you sure you want to delete this game? This action cannot be undone.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/admin/games/${gameId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    alert('Game deleted successfully');
+                    loadGames();
+                    loadDashboardData();
+                } else {
+                    alert('Failed to delete game');
+                }
+            } catch (error) {
+                console.error('Error deleting game:', error);
+                alert('Error deleting game');
+            }
+        }
+
+        async function cleanupActiveGames() {
+            if (!confirm('Are you sure you want to clean up orphaned active games? This will mark games with no active connections as completed.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/admin/cleanup-active-games', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(`Active games cleanup completed! ${result.cleanedCount} orphaned games marked as completed.`);
+                    loadGames();
+                    loadDashboardData();
+                } else {
+                    alert('Failed to cleanup active games');
+                }
+            } catch (error) {
+                console.error('Error cleaning up active games:', error);
+                alert('Error cleaning up active games');
+            }
+        }
+
+        async function cleanupOldGames() {
+            if (!confirm('Are you sure you want to clean up old completed games? This will delete games older than 7 days.')) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/admin/cleanup-games', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    alert(`Cleanup completed! ${result.deletedCount} old games removed.`);
+                    loadGames();
+                    loadDashboardData();
+                } else {
+                    alert('Failed to cleanup games');
+                }
+            } catch (error) {
+                console.error('Error cleaning up games:', error);
+                alert('Error cleaning up games');
+            }
+        }
+
+        function switchTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        async function playAsUser() {
+            // Create a temporary user session for the admin to test the game
+            const adminUsername = localStorage.getItem('adminUsername');
+            const adminToken = localStorage.getItem('adminToken');
+
+            try {
+                // Use real admin token for seamless API access
+                localStorage.setItem('userType', 'registered');
+                localStorage.setItem('username', adminUsername); // Use actual admin username that matches JWT token
+                localStorage.setItem('token', adminToken); // Use real admin token
+
+                // Redirect to game mode selection
+                window.location.href = 'game-mode.html';
+            } catch (error) {
+                console.error('Error setting up user session:', error);
+                alert('Error accessing game mode. Please try again.');
+            }
+        }
+
+        // AI Testing Functions
+        async function runAIPerformanceTest() {
+            try {
+                const response = await fetch('/api/admin/ai-performance-test', {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    const results = await response.json();
+                    displayAITestResults('Performance Test Results', formatPerformanceResults(results));
+                } else if (response.status === 401 || response.status === 403) {
+                    alert('Admin authentication required. Please log in again.');
+                    logout();
+                } else {
+                    alert('Failed to run AI performance test');
+                }
+            } catch (error) {
+                console.error('Error running AI performance test:', error);
+                alert('Error running AI performance test');
+            }
+        }
+
+        async function analyzeAIPatterns() {
+            try {
+                const response = await fetch('/api/admin/ai-patterns', {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    const patterns = await response.json();
+                    displayAITestResults('AI Pattern Analysis', formatPatternAnalysis(patterns));
+                } else if (response.status === 401 || response.status === 403) {
+                    alert('Admin authentication required. Please log in again.');
+                    logout();
+                } else {
+                    alert('Failed to analyze AI patterns');
+                }
+            } catch (error) {
+                console.error('Error analyzing AI patterns:', error);
+                alert('Error analyzing AI patterns');
+            }
+        }
+
+        async function compareAIDifficulties() {
+            try {
+                const response = await fetch('/api/admin/ai-difficulty-comparison', {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    const comparison = await response.json();
+                    displayAITestResults('AI Difficulty Comparison', formatDifficultyComparison(comparison));
+                } else if (response.status === 401 || response.status === 403) {
+                    alert('Admin authentication required. Please log in again.');
+                    logout();
+                } else {
+                    alert('Failed to compare AI difficulties');
+                }
+            } catch (error) {
+                console.error('Error comparing AI difficulties:', error);
+                alert('Error comparing AI difficulties');
+            }
+        }
+
+        async function loadRealGameResults() {
+            try {
+                const response = await fetch('/api/admin/real-game-results', {
+                    headers: {
+                        'Authorization': `Bearer ${adminToken}`
+                    }
+                });
+
+                if (response.ok) {
+                    const results = await response.json();
+                    displayAITestResults('Real Game Results', formatRealGameResults(results));
+                    updateAIStats(results.stats);
+                } else if (response.status === 401 || response.status === 403) {
+                    alert('Admin authentication required. Please log in again.');
+                    logout();
+                } else {
+                    alert('Failed to load real game results');
+                }
+            } catch (error) {
+                console.error('Error loading real game results:', error);
+                alert('Error loading real game results');
+            }
+        }
+
+        function displayAITestResults(title, content) {
+            const resultsDiv = document.getElementById('aiTestResults');
+            const contentDiv = document.getElementById('testResultsContent');
+            resultsDiv.style.display = 'block';
+            contentDiv.innerHTML = `<h4>${title}</h4>${content}`;
+            resultsDiv.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function formatPerformanceResults(results) {
+            return `
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 5px; margin: 10px 0;">
+                    <h5>Performance Metrics:</h5>
+                    <ul>
+                        <li><strong>Average Response Time:</strong> ${results.averageResponseTime}ms</li>
+                        <li><strong>Win Rate:</strong> ${results.winRate}%</li>
+                        <li><strong>Draw Rate:</strong> ${results.drawRate}%</li>
+                        <li><strong>Tests Run:</strong> ${results.totalTests}</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 5px; margin: 10px 0;">
+                    <h5>Difficulty Breakdown:</h5>
+                    <ul>
+                        <li><strong>Easy:</strong> ${results.difficultyBreakdown.easy.wins}W / ${results.difficultyBreakdown.easy.total}T (${results.difficultyBreakdown.easy.winRate}%)</li>
+                        <li><strong>Medium:</strong> ${results.difficultyBreakdown.medium.wins}W / ${results.difficultyBreakdown.medium.total}T (${results.difficultyBreakdown.medium.winRate}%)</li>
+                        <li><strong>Hard:</strong> ${results.difficultyBreakdown.hard.wins}W / ${results.difficultyBreakdown.hard.total}T (${results.difficultyBreakdown.hard.winRate}%)</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        function formatPatternAnalysis(patterns) {
+            return `
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 5px; margin: 10px 0;">
+                    <h5>Pattern Statistics:</h5>
+                    <ul>
+                        <li><strong>Total Patterns:</strong> ${patterns.totalPatterns}</li>
+                        <li><strong>Most Successful Pattern:</strong> ${patterns.mostSuccessful.outcome} points</li>
+                        <li><strong>Average Pattern Frequency:</strong> ${patterns.averageFrequency}</li>
+                        <li><strong>Pattern Effectiveness:</strong> ${patterns.effectiveness}%</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 5px; margin: 10px 0;">
+                    <h5>Top Patterns:</h5>
+                    <table class="admin-table" style="margin-top: 10px;">
+                        <thead>
+                            <tr>
+                                <th>Move</th>
+                                <th>Outcome</th>
+                                <th>Frequency</th>
+                                <th>Success Rate</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${patterns.topPatterns.map(p => `
+                                <tr>
+                                    <td>(${p.move.from.row},${p.move.from.col}) → (${p.move.to.row},${p.move.to.col})</td>
+                                    <td>${p.outcome}</td>
+                                    <td>${p.frequency}</td>
+                                    <td>${p.successRate}%</td>
+                                </tr>
+                            `).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function formatDifficultyComparison(comparison) {
+            return `
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 5px; margin: 10px 0;">
+                    <h5>Difficulty Analysis:</h5>
+                    <ul>
+                        <li><strong>Easy vs Medium:</strong> ${comparison.easyVsMedium.difference} point difference</li>
+                        <li><strong>Medium vs Hard:</strong> ${comparison.mediumVsHard.difference} point difference</li>
+                        <li><strong>Overall Improvement:</strong> ${comparison.overallImprovement}%</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 5px; margin: 10px 0;">
+                    <h5>Strategy Effectiveness:</h5>
+                    <ul>
+                        <li><strong>Easy:</strong> ${comparison.strategyEffectiveness.easy}% tactical decisions</li>
+                        <li><strong>Medium:</strong> ${comparison.strategyEffectiveness.medium}% pattern usage</li>
+                        <li><strong>Hard:</strong> ${comparison.strategyEffectiveness.hard}% optimal play</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        function formatRealGameResults(results) {
+            return `
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 5px; margin: 10px 0;">
+                    <h5>Real Game Statistics:</h5>
+                    <ul>
+                        <li><strong>Total Games:</strong> ${results.totalGames}</li>
+                        <li><strong>Player Wins:</strong> ${results.playerWins} (${results.playerWinRate}%)</li>
+                        <li><strong>AI Wins:</strong> ${results.aiWins} (${results.aiWinRate}%)</li>
+                        <li><strong>Average Game Length:</strong> ${results.averageGameLength} moves</li>
+                    </ul>
+                </div>
+                <div style="background: rgba(0,0,0,0.3); padding: 15px; border-radius: 5px; margin: 10px 0;">
+                    <h5>Difficulty Performance:</h5>
+                    <ul>
+                        <li><strong>Easy Mode:</strong> ${results.difficultyStats.easy.wins}W / ${results.difficultyStats.easy.total}T</li>
+                        <li><strong>Medium Mode:</strong> ${results.difficultyStats.medium.wins}W / ${results.difficultyStats.medium.total}T</li>
+                        <li><strong>Hard Mode:</strong> ${results.difficultyStats.hard.wins}W / ${results.difficultyStats.hard.total}T</li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        function updateAIStats(stats) {
+            document.getElementById('easyPatterns').textContent = stats.easyPatterns || 0;
+            document.getElementById('mediumPatterns').textContent = stats.mediumPatterns || 0;
+            document.getElementById('hardPatterns').textContent = stats.hardPatterns || 0;
+            document.getElementById('totalRealGames').textContent = stats.totalRealGames || 0;
+        }
+
+        function logout() {
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUsername');
+            localStorage.removeItem('adminRole');
+            localStorage.removeItem('boardTheme');
+            localStorage.removeItem('singlePlayerTheme');
+            window.location.href = 'admin-login.html';
+        }
+    </script>
+</body>
+</html>

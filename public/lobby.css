@@ -1,0 +1,659 @@
+.lobby-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.lobby-content {
+    display: grid;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.player-list-container {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+}
+
+.player-list {
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.player-item {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid var(--primary-color);
+    background: rgba(0, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.player-item::before {
+    content: '►';
+    color: var(--primary-color);
+}
+
+.lobby-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 12px;
+}
+
+.guest-player {
+    border-color: #ff8800 !important;
+    background: rgba(255, 136, 0, 0.1);
+}
+
+.guest-player::before {
+    content: '►';
+    color: #ff8800;
+}
+
+.registered-player {
+    border-color: var(--primary-color) !important;
+    background: rgba(0, 255, 255, 0.1);
+}
+
+.registered-player::before {
+    content: '►';
+    color: var(--primary-color);
+}
+
+/* ═══════════════════════════════════════════════════════
+   MATCHMAKING OVERLAY — Cyberpunk Scanner
+   ═══════════════════════════════════════════════════════ */
+
+.matchmaking-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: overlayFadeIn 0.5s ease forwards;
+}
+
+.matchmaking-overlay.hidden {
+    display: none !important;
+}
+
+@keyframes overlayFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.matchmaking-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(0, 20, 40, 0.95) 0%, rgba(0, 0, 0, 0.98) 100%);
+    backdrop-filter: blur(20px);
+}
+
+.matchmaking-content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    padding: 30px;
+    max-width: 420px;
+    width: 90%;
+}
+
+/* ── Scanner Container ── */
+.scanner-container {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Hexagonal rings */
+.hex-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 255, 255, 0.15);
+}
+
+.hex-ring-outer {
+    width: 200px;
+    height: 200px;
+    top: 0; left: 0;
+    animation: ringRotate 12s linear infinite;
+    border-style: dashed;
+    border-color: rgba(0, 255, 255, 0.12);
+}
+
+.hex-ring-mid {
+    width: 150px;
+    height: 150px;
+    top: 25px; left: 25px;
+    animation: ringRotate 8s linear infinite reverse;
+    border-color: rgba(255, 0, 128, 0.15);
+}
+
+.hex-ring-inner {
+    width: 100px;
+    height: 100px;
+    top: 50px; left: 50px;
+    animation: ringRotate 5s linear infinite;
+    border-color: rgba(0, 255, 255, 0.2);
+}
+
+@keyframes ringRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Scanner sweep line */
+.scanner-sweep {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(0, 255, 255, 0.8), transparent);
+    transform-origin: 0 50%;
+    animation: sweep 2.5s linear infinite;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+}
+
+@keyframes sweep {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Pulse rings emanating from center */
+.scanner-pulse {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 255, 255, 0.5);
+    animation: scanPulse 2.5s ease-out infinite;
+}
+
+.scanner-pulse-2 { animation-delay: 0.8s; }
+.scanner-pulse-3 { animation-delay: 1.6s; }
+
+@keyframes scanPulse {
+    0% {
+        width: 20px; height: 20px;
+        opacity: 0.8;
+        border-color: rgba(0, 255, 255, 0.6);
+    }
+    100% {
+        width: 200px; height: 200px;
+        opacity: 0;
+        border-color: rgba(0, 255, 255, 0);
+    }
+}
+
+/* Center core */
+.scanner-core {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 255, 255, 0.15), rgba(0, 10, 20, 0.9));
+    border: 2px solid rgba(0, 255, 255, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: 0 0 30px rgba(0, 255, 255, 0.2), inset 0 0 20px rgba(0, 255, 255, 0.1);
+    animation: corePulse 2s ease-in-out infinite alternate;
+}
+
+.core-icon {
+    font-size: 22px;
+    animation: coreGlow 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes corePulse {
+    from { box-shadow: 0 0 20px rgba(0, 255, 255, 0.2), inset 0 0 15px rgba(0, 255, 255, 0.1); }
+    to { box-shadow: 0 0 40px rgba(0, 255, 255, 0.4), inset 0 0 25px rgba(0, 255, 255, 0.2); }
+}
+
+@keyframes coreGlow {
+    from { filter: drop-shadow(0 0 5px rgba(0, 255, 255, 0.5)); }
+    to { filter: drop-shadow(0 0 15px rgba(0, 255, 255, 0.8)); }
+}
+
+/* Opponent blip on radar */
+.opponent-blip {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 0, 128, 0.6), rgba(255, 0, 128, 0.1));
+    border: 2px solid #ff0080;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+    box-shadow: 0 0 20px rgba(255, 0, 128, 0.5);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.opponent-blip.hidden {
+    display: none;
+}
+
+.opponent-blip.found {
+    display: flex;
+    animation: blipAppear 0.5s ease-out forwards;
+}
+
+.blip-avatar {
+    font-size: 14px;
+}
+
+@keyframes blipAppear {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.3); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* Floating data nodes */
+.data-node {
+    position: absolute;
+    font-size: 8px;
+    color: rgba(0, 255, 255, 0.3);
+    animation: nodeFloat 6s ease-in-out infinite;
+}
+
+.node-1 { top: 10%; left: 15%; animation-delay: 0s; }
+.node-2 { top: 20%; right: 10%; animation-delay: 1s; }
+.node-3 { bottom: 15%; left: 10%; animation-delay: 2s; }
+.node-4 { bottom: 20%; right: 15%; animation-delay: 3s; }
+.node-5 { top: 50%; left: 5%; animation-delay: 0.5s; }
+.node-6 { top: 50%; right: 5%; animation-delay: 2.5s; }
+
+@keyframes nodeFloat {
+    0%, 100% { opacity: 0.2; transform: translateY(0); }
+    50% { opacity: 0.6; transform: translateY(-8px); }
+}
+
+/* ── Status Display ── */
+.match-status {
+    text-align: center;
+    width: 100%;
+}
+
+.status-label {
+    font-size: 11px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: rgba(0, 255, 255, 0.5);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.status-text {
+    font-size: 16px;
+    color: #0ff;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    min-height: 24px;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.status-bar-container {
+    width: 100%;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+}
+
+.status-bar {
+    height: 100%;
+    width: 30%;
+    background: linear-gradient(90deg, transparent, #0ff, transparent);
+    border-radius: 2px;
+    animation: statusScan 2s ease-in-out infinite;
+}
+
+.status-bar-glow {
+    position: absolute;
+    top: -2px;
+    height: 7px;
+    width: 30%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.3), transparent);
+    border-radius: 4px;
+    animation: statusScan 2s ease-in-out infinite;
+}
+
+@keyframes statusScan {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(400%); }
+}
+
+/* ── Waveform Visualizer ── */
+.waveform-container {
+    width: 100%;
+    max-width: 300px;
+    height: 60px;
+    border: 1px solid rgba(0, 255, 255, 0.1);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+#waveformCanvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* ── Player Slots ── */
+.match-slots {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    justify-content: center;
+}
+
+.match-slot {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    min-width: 90px;
+}
+
+.slot-frame {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, rgba(0, 20, 40, 0.8), rgba(0, 10, 20, 0.9));
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s ease;
+}
+
+.slot-you .slot-frame {
+    border-color: rgba(0, 255, 255, 0.5);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+}
+
+.slot-opponent .slot-frame.scanning {
+    border-color: rgba(255, 0, 128, 0.3);
+}
+
+.slot-opponent .slot-frame.found {
+    border-color: rgba(255, 0, 128, 0.6);
+    box-shadow: 0 0 20px rgba(255, 0, 128, 0.3);
+}
+
+.slot-avatar {
+    font-size: 28px;
+    z-index: 1;
+}
+
+/* Scan line animation on opponent slot */
+.slot-scan-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, rgba(255, 0, 128, 0.6), transparent);
+    animation: slotScan 1.5s ease-in-out infinite;
+}
+
+@keyframes slotScan {
+    0% { top: 0; opacity: 1; }
+    50% { top: 100%; opacity: 0.5; }
+    100% { top: 0; opacity: 1; }
+}
+
+.slot-name {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ccc;
+    font-weight: 600;
+}
+
+.slot-status {
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.slot-status.ready {
+    color: #0ff;
+    background: rgba(0, 255, 255, 0.1);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.slot-status.searching {
+    color: #ff0080;
+    background: rgba(255, 0, 128, 0.1);
+    border: 1px solid rgba(255, 0, 128, 0.3);
+    animation: statusBlink 1s ease-in-out infinite alternate;
+}
+
+.slot-status.matched {
+    color: #00ff88;
+    background: rgba(0, 255, 136, 0.1);
+    border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+@keyframes statusBlink {
+    from { opacity: 0.5; }
+    to { opacity: 1; }
+}
+
+/* VS divider */
+.match-vs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+}
+
+.vs-line {
+    width: 1px;
+    height: 20px;
+    background: linear-gradient(to bottom, transparent, rgba(0, 255, 255, 0.3), transparent);
+}
+
+.vs-text {
+    font-size: 14px;
+    color: rgba(0, 255, 255, 0.6);
+    letter-spacing: 4px;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+/* ── Cancel Button ── */
+.cancel-search-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    background: transparent;
+    border: 1px solid rgba(255, 68, 68, 0.4);
+    color: rgba(255, 68, 68, 0.8);
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-family: inherit;
+}
+
+.cancel-search-btn:hover {
+    background: rgba(255, 68, 68, 0.1);
+    border-color: rgba(255, 68, 68, 0.6);
+    color: #ff4444;
+}
+
+.cancel-icon {
+    font-size: 14px;
+}
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE RESPONSIVENESS — Lobby
+   ═══════════════════════════════════════════════════════ */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .lobby-container {
+        padding: 15px;
+    }
+
+    .lobby-content {
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .player-list-container {
+        padding: 15px;
+    }
+
+    .player-list {
+        min-height: 150px;
+        max-height: 300px;
+    }
+
+    .player-item {
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    .lobby-controls {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+
+    .lobby-controls .cyber-button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .lobby-container {
+        padding: 10px;
+    }
+
+    .lobby-container h1 {
+        font-size: 1.3em;
+    }
+
+    .lobby-content {
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    .player-list-container {
+        padding: 10px;
+    }
+
+    .player-list-container h2 {
+        font-size: 1em;
+    }
+
+    .player-list {
+        min-height: 120px;
+        max-height: 250px;
+        padding: 8px;
+        margin-top: 10px;
+    }
+
+    .player-item {
+        padding: 10px 8px;
+        margin: 4px 0;
+        font-size: 13px;
+        gap: 8px;
+    }
+
+    .lobby-controls {
+        margin-top: 15px;
+    }
+
+    .lobby-controls .cyber-button {
+        padding: 12px 20px;
+        font-size: 13px;
+    }
+
+    /* Matchmaking overlay mobile */
+    .matchmaking-content {
+        gap: 20px;
+        padding: 20px 15px;
+    }
+
+    .scanner-container {
+        width: 160px;
+        height: 160px;
+    }
+
+    .hex-ring-outer { width: 160px; height: 160px; }
+    .hex-ring-mid { width: 120px; height: 120px; top: 20px; left: 20px; }
+    .hex-ring-inner { width: 80px; height: 80px; top: 40px; left: 40px; }
+
+    .scanner-sweep { width: 80px; }
+
+    .scanner-core { width: 42px; height: 42px; }
+    .core-icon { font-size: 18px; }
+
+    .status-text { font-size: 14px; }
+
+    .match-slots { gap: 12px; }
+    .slot-frame { width: 54px; height: 54px; }
+    .slot-avatar { font-size: 22px; }
+    .slot-name { font-size: 10px; letter-spacing: 1px; }
+
+    .waveform-container { max-width: 250px; height: 50px; }
+}
+
+/* Small phones */
+@media (max-width: 360px) {
+    .lobby-container {
+        padding: 8px;
+    }
+
+    .player-item {
+        font-size: 12px;
+        padding: 8px 6px;
+    }
+
+    .lobby-controls .cyber-button {
+        padding: 10px 16px;
+        font-size: 12px;
+    }
+
+    .scanner-container { width: 130px; height: 130px; }
+    .hex-ring-outer { width: 130px; height: 130px; }
+    .hex-ring-mid { width: 100px; height: 100px; top: 15px; left: 15px; }
+    .hex-ring-inner { width: 70px; height: 70px; top: 30px; left: 30px; }
+    .scanner-sweep { width: 65px; }
+}

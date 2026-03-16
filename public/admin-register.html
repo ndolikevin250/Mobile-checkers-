@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Admin Setup</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mobile.css">
+    <style>
+        /* Override global styles that might interfere */
+        body {
+            display: block !important;
+        }
+
+        .admin-setup-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .admin-setup-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .security-notice {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff4444;
+            color: #ff6666;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .security-notice h3 {
+            margin-top: 0;
+            color: #ff6666;
+        }
+
+        .admin-form-group {
+            margin-bottom: 20px;
+        }
+
+        .password-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .password-container input {
+            flex: 1;
+            padding-right: 50px; /* Make room for the toggle button */
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #00ffff;
+            cursor: pointer;
+            font-size: 18px;
+            padding: 5px;
+            z-index: 102;
+            pointer-events: auto !important;
+        }
+
+        .password-toggle:hover {
+            color: #00aaff;
+        }
+
+        .admin-form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #00ffff;
+            font-weight: bold;
+        }
+
+        .admin-form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid #00ffff;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            position: relative;
+            z-index: 10;
+            cursor: text;
+            pointer-events: auto !important;
+        }
+
+        .admin-form-group input:focus {
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Override any global styles that might interfere */
+        .admin-form-group input,
+        .admin-button {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            appearance: none !important;
+        }
+
+        .admin-button {
+            -webkit-user-select: none !important;
+            -moz-user-select: none !important;
+            -ms-user-select: none !important;
+            user-select: none !important;
+        }
+
+        .admin-button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(45deg, #00aa00, #00cc00);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(0, 170, 0, 0.5);
+        }
+
+        .admin-back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #888;
+            text-decoration: none;
+            position: relative;
+            z-index: 200;
+            cursor: pointer;
+            pointer-events: auto !important;
+        }
+
+        .admin-back-link:hover {
+            color: #00ffff;
+        }
+
+        .setup-instructions {
+            background: rgba(255, 165, 0, 0.1);
+            border: 1px solid #ffaa00;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .setup-instructions h4 {
+            color: #ffaa00;
+            margin-top: 0;
+        }
+
+        .setup-instructions ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+
+        .setup-instructions li {
+            margin-bottom: 5px;
+        }
+
+        .form-feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            display: none;
+        }
+
+        .form-feedback.success {
+            background: rgba(0, 255, 0, 0.1);
+            border: 1px solid #00aa00;
+            color: #00cc00;
+        }
+
+        .form-feedback.error {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid #ff4444;
+            color: #ff6666;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #00ffff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .admin-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-setup-container">
+        <div class="cyber-border" style="position: relative; z-index: 1;">
+            <div class="admin-setup-header">
+                <h1 class="glitch-text">ADMIN ACCOUNT SETUP</h1>
+            </div>
+
+            <div class="security-notice">
+                <h3>⚠️ HIGH SECURITY SETUP ⚠️</h3>
+                <p>This creates the first administrator account with full system access.</p>
+                <p><strong>Keep the admin registration key secure!</strong></p>
+            </div>
+
+            <div class="setup-instructions">
+                <h4>🚀 Quick Setup Guide:</h4>
+                <ol>
+                    <li><strong>✅ Already Done:</strong> Admin key is set in your <code>.env</code> file</li>
+                    <li><strong>Enter Key:</strong> Copy <code>admin-master-key-2025-secure-access</code> and paste it below</li>
+                    <li><strong>Choose Credentials:</strong> Pick a strong admin username and password</li>
+                    <li><strong>Full Access:</strong> This account controls everything - users, games, system</li>
+                </ol>
+                <div style="background: rgba(0, 255, 0, 0.1); border: 1px solid #00aa00; padding: 10px; border-radius: 3px; margin-top: 10px;">
+                    <strong>💡 Tip:</strong> Remember your admin credentials - you'll need them to login!
+                </div>
+            </div>
+
+            <form id="adminRegisterForm" style="position: relative; z-index: 100;">
+                <div class="admin-form-group">
+                    <label for="adminUsername">Admin Username</label>
+                    <input type="text" id="adminUsername" placeholder="Choose admin username" required style="position: relative; z-index: 101;">
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="adminPassword">Admin Password</label>
+                    <div class="password-container">
+                        <input type="password" id="adminPassword" placeholder="Choose strong password" required style="position: relative; z-index: 101;">
+                        <button type="button" class="password-toggle" onclick="togglePassword('adminPassword', this)">👁️</button>
+                    </div>
+                </div>
+
+                <div class="admin-form-group">
+                    <label for="adminKey">Admin Registration Key</label>
+                    <div class="password-container">
+                        <input type="password" id="adminKey" placeholder="Enter the admin key from your .env file" required style="position: relative; z-index: 101;">
+                        <button type="button" class="password-toggle" onclick="togglePassword('adminKey', this)">👁️</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="admin-button" style="position: relative; z-index: 101;">CREATE ADMIN ACCOUNT</button>
+            </form>
+
+            <div id="formFeedback" class="form-feedback"></div>
+        </div>
+
+        <!-- Admin navigation links -->
+        <div style="text-align: center; margin-top: 30px; position: relative; z-index: 200;">
+            <a href="admin-login.html" class="admin-back-link">← Already have admin account? Login here</a>
+        </div>
+    </div>
+
+    <script>
+        // Password toggle function
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            if (input.type === 'password') {
+                input.type = 'text';
+                button.textContent = '🙈'; // Hide icon
+            } else {
+                input.type = 'password';
+                button.textContent = '👁️'; // Show icon
+            }
+        }
+
+        // Ensure form elements are clickable and focusable
+        document.addEventListener('DOMContentLoaded', function() {
+            // Force enable pointer events and ensure elements are focusable
+            const inputs = document.querySelectorAll('input, button');
+            inputs.forEach(element => {
+                element.style.pointerEvents = 'auto';
+                element.style.cursor = element.tagName === 'INPUT' ? 'text' : 'pointer';
+                element.tabIndex = 0; // Ensure tab navigation works
+            });
+
+            // Admin key must be manually entered for security
+
+            // Add click event listeners to ensure responsiveness
+            inputs.forEach(element => {
+                element.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    if (element.tagName === 'INPUT') {
+                        element.focus();
+                    }
+                });
+            });
+
+            // Ensure links are clickable
+            const links = document.querySelectorAll('a');
+            links.forEach(link => {
+                link.style.pointerEvents = 'auto';
+                link.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    // Allow normal link behavior
+                });
+            });
+        });
+
+        function showFeedback(message, type) {
+            const feedbackDiv = document.getElementById('formFeedback');
+            feedbackDiv.textContent = message;
+            feedbackDiv.className = `form-feedback ${type}`;
+            feedbackDiv.style.display = 'block';
+
+            // Auto-hide after 5 seconds for success messages
+            if (type === 'success') {
+                setTimeout(() => {
+                    feedbackDiv.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        function setLoading(loading) {
+            const button = document.querySelector('.admin-button');
+            const buttonText = button.querySelector('.button-text') || button;
+
+            if (loading) {
+                button.disabled = true;
+                button.innerHTML = '<span class="loading"></span> Creating Admin Account...';
+            } else {
+                button.disabled = false;
+                button.innerHTML = 'CREATE ADMIN ACCOUNT';
+            }
+        }
+
+        document.getElementById('adminRegisterForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('adminUsername').value.trim();
+            const password = document.getElementById('adminPassword').value;
+            const adminKey = document.getElementById('adminKey').value.trim();
+
+            // Basic validation
+            if (!username || !password || !adminKey) {
+                showFeedback('Please fill in all fields', 'error');
+                return;
+            }
+
+            if (password.length < 6) {
+                showFeedback('Password must be at least 6 characters long', 'error');
+                return;
+            }
+
+            setLoading(true);
+
+            try {
+                const response = await fetch('/api/admin/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password, adminKey })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    showFeedback('✅ Admin account created successfully! Redirecting to login...', 'success');
+
+                    // Redirect after showing success message
+                    setTimeout(() => {
+                        window.location.href = 'admin-login.html';
+                    }, 2000);
+                } else {
+                    showFeedback('❌ Registration failed: ' + data.message, 'error');
+                }
+            } catch (error) {
+                console.error('Admin registration error:', error);
+                showFeedback('❌ Network error. Please check your connection and try again.', 'error');
+            } finally {
+                setLoading(false);
+            }
+        });
+
+        // Auto-hide feedback when user starts typing
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('input', () => {
+                document.getElementById('formFeedback').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

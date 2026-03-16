@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Game Lobby</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="lobby.css">
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+    <div class="container">
+        <div class="lobby-container cyber-border">
+            <h1 class="glitch-text">Game Lobby</h1>
+
+            <div class="lobby-content">
+                <div class="player-list-container">
+                    <h2 class="glitch-text">Players Online</h2>
+                    <div id="playerList" class="player-list cyber-border">
+                        <!-- Players will be listed here -->
+                    </div>
+                </div>
+
+                <div class="lobby-controls">
+                    <button class="cyber-button" id="findMatchBtn" onclick="findMatch()">
+                        <span class="cyber-button__glitch"></span>
+                        <span class="cyber-button__text">Find Match</span>
+                    </button>
+                    <button class="cyber-button" onclick="leaveLobby()">
+                        <span class="cyber-button__glitch"></span>
+                        <span class="cyber-button__text">Leave Lobby</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Matchmaking Overlay -->
+    <div id="matchmakingOverlay" class="matchmaking-overlay hidden">
+        <div class="matchmaking-bg"></div>
+        <div class="matchmaking-content">
+            <!-- Hexagonal Scanner -->
+            <div class="scanner-container">
+                <div class="hex-grid">
+                    <div class="hex-ring hex-ring-outer"></div>
+                    <div class="hex-ring hex-ring-mid"></div>
+                    <div class="hex-ring hex-ring-inner"></div>
+                </div>
+                <div class="scanner-sweep"></div>
+                <div class="scanner-pulse"></div>
+                <div class="scanner-pulse scanner-pulse-2"></div>
+                <div class="scanner-pulse scanner-pulse-3"></div>
+                <div class="scanner-core">
+                    <div class="core-icon">⚔</div>
+                </div>
+                <!-- Opponent avatar will appear here -->
+                <div id="opponentBlip" class="opponent-blip hidden">
+                    <span class="blip-avatar">♟</span>
+                </div>
+                <!-- Floating data nodes -->
+                <div class="data-node node-1">◆</div>
+                <div class="data-node node-2">◆</div>
+                <div class="data-node node-3">◆</div>
+                <div class="data-node node-4">◆</div>
+                <div class="data-node node-5">◆</div>
+                <div class="data-node node-6">◆</div>
+            </div>
+
+            <!-- Status display -->
+            <div class="match-status">
+                <div class="status-label">MATCHMAKING</div>
+                <div class="status-text" id="matchStatusText">Initializing scan...</div>
+                <div class="status-bar-container">
+                    <div class="status-bar" id="matchStatusBar"></div>
+                    <div class="status-bar-glow"></div>
+                </div>
+            </div>
+
+            <!-- Waveform visualizer -->
+            <div class="waveform-container">
+                <canvas id="waveformCanvas" width="300" height="60"></canvas>
+            </div>
+
+            <!-- Player slots -->
+            <div class="match-slots">
+                <div class="match-slot slot-you">
+                    <div class="slot-frame">
+                        <div class="slot-avatar" id="yourAvatar">♟</div>
+                    </div>
+                    <div class="slot-name" id="yourName">YOU</div>
+                    <div class="slot-status ready">READY</div>
+                </div>
+                <div class="match-vs">
+                    <div class="vs-line"></div>
+                    <div class="vs-text">VS</div>
+                    <div class="vs-line"></div>
+                </div>
+                <div class="match-slot slot-opponent">
+                    <div class="slot-frame scanning">
+                        <div class="slot-avatar" id="opponentAvatar">?</div>
+                        <div class="slot-scan-line"></div>
+                    </div>
+                    <div class="slot-name" id="opponentName">SCANNING...</div>
+                    <div class="slot-status searching" id="opponentStatus">SEARCHING</div>
+                </div>
+            </div>
+
+            <!-- Cancel button -->
+            <button class="cancel-search-btn" onclick="findMatch()">
+                <span class="cancel-icon">✕</span>
+                <span>ABORT SCAN</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="lobby.js"></script>
+    <script src="mobile-touch.js"></script>
+</body>
+</html>

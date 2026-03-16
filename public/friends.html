@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Friends</title>
+    <link rel="stylesheet" href="friends.css">
+    <link rel="stylesheet" href="mobile.css">
+</head>
+<body>
+    <!-- Background -->
+    <div class="friends-bg">
+        <div class="grid-overlay"></div>
+        <div class="vignette"></div>
+    </div>
+
+    <div class="friends-container">
+        <!-- Top Bar -->
+        <div class="friends-topbar">
+            <button class="back-btn" onclick="goBack()">
+                <span class="back-arrow">‹</span>
+                <span>BACK</span>
+            </button>
+            <div class="topbar-title">FRIENDS</div>
+            <div class="topbar-count" id="friendCount">0</div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="tab-bar">
+            <button class="tab active" data-tab="friends" onclick="switchTab('friends')">
+                <span class="tab-label">Friends</span>
+            </button>
+            <button class="tab" data-tab="requests" onclick="switchTab('requests')">
+                <span class="tab-label">Requests</span>
+                <span class="tab-badge hidden" id="requestBadge">0</span>
+            </button>
+            <button class="tab" data-tab="search" onclick="switchTab('search')">
+                <span class="tab-label">Add</span>
+            </button>
+        </div>
+
+        <!-- Friends Tab -->
+        <div class="tab-panel active" id="panel-friends">
+            <div class="friend-list" id="friendList">
+                <div class="empty-state" id="emptyFriends">
+                    <div class="empty-icon">♟</div>
+                    <div class="empty-text">No friends yet</div>
+                    <div class="empty-hint">Search for players to add as friends</div>
+                    <button class="empty-action" onclick="switchTab('search')">Find Players</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Requests Tab -->
+        <div class="tab-panel" id="panel-requests">
+            <div class="request-section" id="incomingSection">
+                <div class="section-label">INCOMING REQUESTS</div>
+                <div class="request-list" id="incomingList">
+                    <div class="empty-state small">No incoming requests</div>
+                </div>
+            </div>
+            <div class="request-section" id="outgoingSection">
+                <div class="section-label">SENT REQUESTS</div>
+                <div class="request-list" id="outgoingList">
+                    <div class="empty-state small">No outgoing requests</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Tab -->
+        <div class="tab-panel" id="panel-search">
+            <div class="search-box">
+                <span class="search-icon">⌕</span>
+                <input type="text" id="searchInput" placeholder="Search by username..." autocomplete="off" spellcheck="false">
+                <span class="search-clear hidden" id="searchClear" onclick="clearSearch()">✕</span>
+            </div>
+            <div class="search-results" id="searchResults">
+                <div class="empty-state small">Type a username to search</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu (for long-press / options) -->
+    <div class="context-menu hidden" id="contextMenu">
+        <button class="ctx-btn" id="ctxChallenge" onclick="challengeFriend()">
+            <span>⚔</span> Challenge to Game
+        </button>
+        <button class="ctx-btn" id="ctxViewStats" onclick="viewFriendStats()">
+            <span>📊</span> View Stats
+        </button>
+        <button class="ctx-btn danger" id="ctxRemove" onclick="removeFriend()">
+            <span>✕</span> Remove Friend
+        </button>
+        <button class="ctx-btn danger" id="ctxBlock" onclick="blockUser()">
+            <span>⛔</span> Block User
+        </button>
+    </div>
+    <div class="context-overlay hidden" id="contextOverlay" onclick="closeContextMenu()"></div>
+
+    <script src="friends.js"></script>
+    <script src="mobile-touch.js"></script>
+</body>
+</html>

@@ -18,14 +18,9 @@ body {
     padding-right: var(--safe-right);
 }
 
-/* ── Prevent overscroll bounce on iOS ── */
+/* ── Smooth scrolling on iOS ── */
 html {
-    overscroll-behavior: none;
     -webkit-overflow-scrolling: touch;
-}
-
-body {
-    overscroll-behavior-y: contain;
 }
 
 /* ── Touch feedback: ripple effect on tappable elements ── */

@@ -1773,7 +1773,14 @@ app.use(mongoSanitize());
 // Data sanitization against XSS
 app.use(xss());
 
-app.use(express.static('public'));
+// Serve static files with no-cache for CSS/JS so browsers always check for updates
+app.use(express.static('public', {
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.css') || filePath.endsWith('.js')) {
+            res.setHeader('Cache-Control', 'no-cache');
+        }
+    }
+}));
 
 // Rate limiter for authentication routes (100 requests per 15 minutes)
 const authLimiter = rateLimit({

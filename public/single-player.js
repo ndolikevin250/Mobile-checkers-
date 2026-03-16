@@ -553,18 +553,19 @@ function initializeBoard() {
 // Handle piece selection and movement
 function handleCellClick(e) {
     const cell = e.target.closest('.cell');
-    const piece = e.target.closest('.piece');
-    
     if (!cell) return;
     if (currentPlayer !== 'blue') return;
-    
+
+    // Find piece inside the cell (works for both desktop clicks and mobile synthetic clicks)
+    const piece = cell.querySelector('.piece');
+
     const row = parseInt(cell.dataset.row);
     const col = parseInt(cell.dataset.col);
-    
+
     if (selectedPiece) {
         const validMoves = getValidMoves(selectedPiece.row, selectedPiece.col);
         const move = validMoves.find(m => m.row === row && m.col === col);
-        
+
         if (move) {
             movePiece(selectedPiece.row, selectedPiece.col, row, col, move.isJump);
 
@@ -587,11 +588,11 @@ function handleCellClick(e) {
         }
         return;
     }
-    
+
     if (piece && gameBoard[row][col]?.color === 'blue') {
         selectedPiece = { row, col, element: piece };
         piece.classList.add('selected');
-        
+
         const validMoves = getValidMoves(row, col);
         highlightValidMoves(validMoves);
     }
@@ -1682,13 +1683,16 @@ async function initializeGame() {
             setTimeout(() => soundManager.playGameStart(), 300);
             audioEnabled = true;
         }
-        document.removeEventListener('click', enableAudio);
-        document.removeEventListener('touchstart', enableAudio);
-        document.removeEventListener('keydown', enableAudio);
+        document.removeEventListener('click', enableAudio, true);
+        document.removeEventListener('touchstart', enableAudio, true);
+        document.removeEventListener('touchend', enableAudio, true);
+        document.removeEventListener('keydown', enableAudio, true);
     };
-    document.addEventListener('click', enableAudio);
-    document.addEventListener('touchstart', enableAudio);
-    document.addEventListener('keydown', enableAudio);
+    // Use capture phase so it fires before preventDefault in mobile-touch.js
+    document.addEventListener('click', enableAudio, true);
+    document.addEventListener('touchstart', enableAudio, true);
+    document.addEventListener('touchend', enableAudio, true);
+    document.addEventListener('keydown', enableAudio, true);
 
     // Initialize AI thinking indicator
     initializeAIThinkingIndicator();

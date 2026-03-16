@@ -303,15 +303,18 @@ body {
 @media (max-width: 480px) {
     body {
         padding: 10px 0;
+        align-items: center;
     }
 
     .game-container {
         width: 95vw;
         padding: 10px;
+        margin: 0 auto;
     }
 
     .board-wrapper {
         padding: 10px;
+        margin: 0 auto;
     }
 
     .controls {

@@ -137,9 +137,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Load sound preference
     loadSoundPreference();
 
-    // Enable audio on user interaction
-    document.addEventListener('click', () => soundManager.enableAudio(), { once: true });
-    document.addEventListener('touchstart', () => soundManager.enableAudio(), { once: true });
+    // Enable audio on user interaction (capture phase so it fires before mobile-touch.js preventDefault)
+    document.addEventListener('click', () => soundManager.enableAudio(), { once: true, capture: true });
+    document.addEventListener('touchstart', () => soundManager.enableAudio(), { once: true, capture: true });
+    document.addEventListener('touchend', () => soundManager.enableAudio(), { once: true, capture: true });
 
     // Prevent browser back/forward navigation when logged out
     window.addEventListener('beforeunload', function() {
